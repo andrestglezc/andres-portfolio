@@ -55,6 +55,23 @@ const nextConfig: NextConfig = {
         source: '/(.*)',
         headers: securityHeaders,
       },
+      {
+        source: '/resume.pdf',
+        headers: [
+          {
+            key: 'X-Frame-Options',
+            value: 'SAMEORIGIN',
+          },
+          {
+            key: 'Content-Disposition',
+            value: 'inline',
+          },
+          {
+            key: 'Content-Type',
+            value: 'application/pdf',
+          },
+        ],
+      },
     ];
   },
 };
