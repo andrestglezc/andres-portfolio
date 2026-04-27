@@ -550,11 +550,17 @@ function ResumeApp() {
           Andres T. Gonzalez C. — CV 2026
         </span>
       </div>
-      <iframe
-        src="/resume.pdf"
+      <object
+        data="/resume.pdf"
+        type="application/pdf"
         style={{ flex: 1, width: '100%', border: 'none' }}
-        title="Resume PDF"
-      />
+      >
+        <embed
+          src="/resume.pdf"
+          type="application/pdf"
+          style={{ width: '100%', height: '100%' }}
+        />
+      </object>
     </div>
   );
 }
