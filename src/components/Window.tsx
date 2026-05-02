@@ -8,6 +8,7 @@ import DoomApp from "@/components/apps/DoomApp";
 import AoeApp from "@/components/apps/AoeApp";
 import SimsApp from "@/components/apps/SimsApp";
 import MusicApp from "@/components/apps/MusicApp";
+import ShrineApp from "@/components/apps/ShrineApp";
 import { useMusicStore } from "@/lib/musicStore";
 import { content, CaseStudyKey } from "@/lib/content";
 import { filesystem, FolderNode, FSNode, FileNode } from "@/lib/filesystem";
@@ -1805,6 +1806,7 @@ export default function Window({ win }: { win: WindowConfig }) {
         {win.app === "run" && <RunApp />}
         {win.app === "help" && <HelpApp />}
         {win.app === "shutdown" && <ShutdownApp windowId={win.id} />}
+        {win.app === "shrine" && <ShrineApp />}
       </div>
 
       {/* Win98 resize grip */}

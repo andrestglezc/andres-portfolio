@@ -22,7 +22,8 @@ export type AppType =
   | 'run'
   | 'help'
   | 'shutdown'
-  | 'music';
+  | 'music'
+  | 'shrine';
 
 export interface WindowConfig {
   id: WindowId;
@@ -43,7 +44,7 @@ export interface WindowStore {
   windows: WindowConfig[];
   activeWindowId: WindowId | null;
 
-  openWindow: (config: Omit<WindowConfig, 'zIndex' | 'isMinimized' | 'isMaximized'>) => void;
+  openWindow: (config: Omit<WindowConfig, 'zIndex' | 'isMinimized' | 'isMaximized'> & { zIndex?: number }) => void;
   closeWindow: (id: WindowId) => void;
   focusWindow: (id: WindowId) => void;
   moveWindow: (id: WindowId, x: number, y: number) => void;
@@ -52,6 +53,7 @@ export interface WindowStore {
   restoreWindow: (id: WindowId) => void;
   maximizeWindow: (id: WindowId) => void;
   closeAll: () => void;
+  setWindowZIndex: (id: WindowId, zIndex: number) => void;
 }
 
 let zCounter = 10;
@@ -72,7 +74,7 @@ export const useWindowStore = create<WindowStore>((set, get) => ({
         ...state.windows,
         {
           ...config,
-          zIndex: ++zCounter,
+          zIndex: config.zIndex ?? ++zCounter,
           isMinimized: false,
           isMaximized: false,
         },
@@ -150,6 +152,11 @@ export const useWindowStore = create<WindowStore>((set, get) => ({
     })),
 
   closeAll: () => set({ windows: [], activeWindowId: null }),
+
+  setWindowZIndex: (id, zIndex) =>
+    set(state => ({
+      windows: state.windows.map(w => w.id === id ? { ...w, zIndex } : w),
+    })),
 }));
 
 // Helpers for opening specific windows with sane defaults
@@ -183,6 +190,7 @@ export function defaultWindowProps(
     help:      { width: 480, height: 400, title: 'Windows Help' },
     shutdown:  { width: 420, height: 320, title: 'Shut Down Nostalgia OS' },
     music:     { width: 459, height: 560, title: 'Music Player' },
+    shrine:    { width: 360, height: 620, title: "O'malley 🕯️" },
   };
 
   return { ...base, ...sizes[app] };
