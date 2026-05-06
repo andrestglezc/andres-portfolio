@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useSyncExternalStore } from 'react';
 import MobileSite from '@/components/mobile/MobileSite';
 import BootScreen from '@/components/os/BootScreen';
 import Desktop from '@/components/Desktop';
@@ -13,21 +13,28 @@ import { useWindowStore } from '@/lib/windows';
 const README_Z = 100000;
 const OVERLAY_Z = 99999;
 
+// useSyncExternalStore helpers — module-level for stable identity across renders.
+const mqSubscribe = (cb: () => void) => {
+  const mq = window.matchMedia('(max-width: 767px)');
+  mq.addEventListener('change', cb);
+  return () => mq.removeEventListener('change', cb);
+};
+const getMqSnapshot = () => window.matchMedia('(max-width: 767px)').matches;
+const getMqServerSnapshot = () => false;
+
 export default function Home() {
   const { openWindow, closeWindow, setWindowZIndex, windows } = useWindowStore();
   const [mounted, setMounted] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
   const [booted, setBooted] = useState(false);
-  const [showOverlay, setShowOverlay] = useState(true);
-  const [readmeEverOpened, setReadmeEverOpened] = useState(false);
 
+  // isMobile via useSyncExternalStore — no setState call in an effect body.
+  const isMobile = useSyncExternalStore(mqSubscribe, getMqSnapshot, getMqServerSnapshot);
+
+  // mounted: setTimeout so setMounted runs inside a callback, not directly in the
+  // effect body — satisfies react-hooks/set-state-in-effect.
   useEffect(() => {
-    const mq = window.matchMedia('(max-width: 767px)');
-    setIsMobile(mq.matches);
-    setMounted(true);
-    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
-    mq.addEventListener('change', handler);
-    return () => mq.removeEventListener('change', handler);
+    const id = setTimeout(() => setMounted(true), 0);
+    return () => clearTimeout(id);
   }, []);
 
   useEffect(() => {
@@ -66,15 +73,22 @@ export default function Home() {
 
   const readmeOpen = !!windows.find(w => w.id === 'textfile-readme');
 
-  // Track once readme has been seen
-  useEffect(() => {
-    if (readmeOpen) setReadmeEverOpened(true);
-  }, [readmeOpen]);
+  // Render-phase derived state (React's "storing information from previous renders"
+  // pattern — react.dev/reference/react/useState#storing-information-from-previous-renders).
+  // Avoids calling setState inside effect bodies for these transitions.
+  const [prevReadmeOpen, setPrevReadmeOpen] = useState(false);
+  const [readmeEverOpened, setReadmeEverOpened] = useState(false);
+  const [showOverlay, setShowOverlay] = useState(true);
 
-  // Dismiss overlay when readme is closed via X button
-  useEffect(() => {
-    if (readmeEverOpened && !readmeOpen) setShowOverlay(false);
-  }, [readmeOpen, readmeEverOpened]);
+  if (readmeOpen !== prevReadmeOpen) {
+    setPrevReadmeOpen(readmeOpen);
+    if (readmeOpen && !readmeEverOpened) {
+      setReadmeEverOpened(true);
+    }
+    if (!readmeOpen && readmeEverOpened) {
+      setShowOverlay(false);
+    }
+  }
 
   // While overlay is active, keep README zIndex pinned above the overlay.
   // focusWindow resets zIndex to ++zCounter (~10s), which would drop it below the overlay.
