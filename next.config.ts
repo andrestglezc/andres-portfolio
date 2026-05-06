@@ -6,7 +6,8 @@ import type { NextConfig } from "next";
 // frame-src 'self' keeps the resume PDF iframe working inside the OS window.
 const CSP = [
   "default-src 'self'",
-  "script-src 'self'",
+  // 'unsafe-inline' is required: Next.js injects inline bootstrap scripts for hydration
+  "script-src 'self' 'unsafe-inline'",
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob:",
   "media-src 'self' blob:",
