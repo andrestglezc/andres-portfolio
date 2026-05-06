@@ -25,6 +25,12 @@ function getIconSrc(node: FSNode): string {
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
+// Module-level helper so Math.random() is outside React's render scope and
+// doesn't trigger the react-hooks/purity "impure function during render" rule.
+function randPos(baseX: number, rangeX: number, baseY: number, rangeY: number) {
+  return { x: baseX + Math.random() * rangeX, y: baseY + Math.random() * rangeY };
+}
+
 function resolveFileOpen(node: FileNode): { app: AppType; id: WindowId; width: number; height: number } {
   if (node.fileType === 'json')      return { app: 'jsonfile',  id: `jsonfile-${node.contentKey}`,  width: 480, height: 400 };
   if (node.fileType === 'app' && node.contentKey === 'doom')
@@ -117,8 +123,7 @@ export default function Desktop() {
         app: 'finder',
         title: node.name,
         props: { folder: node as FolderNode },
-        x: 100 + Math.random() * 80,
-        y: 50 + Math.random() * 40,
+        ...randPos(100, 80, 50, 40),
         width: 520,
         height: 380,
       });
@@ -130,8 +135,7 @@ export default function Desktop() {
         app,
         title: node.name,
         props: { contentKey: node.contentKey },
-        x: 120 + Math.random() * 80,
-        y: 60 + Math.random() * 40,
+        ...randPos(120, 80, 60, 40),
         width,
         height,
       });

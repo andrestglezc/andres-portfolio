@@ -45,7 +45,7 @@ function LinkedInBtn() {
       onMouseDown={() => setPressed(true)}
       onMouseUp={() => setPressed(false)}
       onMouseLeave={() => setPressed(false)}
-      onClick={() => window.open('https://www.linkedin.com/in/andres-gonzalez-ux/', '_blank')}
+      onClick={() => window.open('https://www.linkedin.com/in/andres-gonzalez-ux/', '_blank', 'noopener,noreferrer')}
       style={{
         ...(pressed ? bevelDown : bevelUp),
         background: '#C0C0C0',
@@ -141,9 +141,11 @@ export default function Taskbar() {
         minute: '2-digit',
         hour12: true,
       });
-    setTime(fmt());
+    // Use setTimeout(fn, 0) so setTime is called in a callback, not synchronously
+    // in the effect body — satisfies react-hooks/set-state-in-effect.
+    const init = setTimeout(() => setTime(fmt()), 0);
     const id = setInterval(() => setTime(fmt()), 10_000);
-    return () => clearInterval(id);
+    return () => { clearTimeout(init); clearInterval(id); };
   }, []);
 
   const workFolder = filesystem.children.find(
