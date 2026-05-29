@@ -65,7 +65,6 @@ export default function Home() {
         width: 480,
         height: 360,
         zIndex: README_Z,
-        onClose: () => setShowOverlay(false),
       });
     }, 300);
     return () => clearTimeout(t);

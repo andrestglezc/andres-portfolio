@@ -38,7 +38,6 @@ export interface WindowConfig {
   isMinimized: boolean;
   isMaximized: boolean;
   previousBounds?: { x: number; y: number; width: number; height: number };
-  onClose?: () => void;
 }
 
 export interface WindowStore {

@@ -1725,7 +1725,7 @@ export default function Window({ win }: { win: WindowConfig }) {
           <Win98TitleBtn
             label="Minimize"
             symbol="_"
-            onClick={(e) => { e.stopPropagation(); win.onClose?.(); minimizeWindow(win.id); }}
+            onClick={(e) => { e.stopPropagation(); minimizeWindow(win.id); }}
           />
           <Win98TitleBtn
             label="Maximize"
@@ -1735,7 +1735,7 @@ export default function Window({ win }: { win: WindowConfig }) {
           <Win98TitleBtn
             label="Close"
             symbol="✕"
-            onClick={(e) => { e.stopPropagation(); if (win.app === 'music') useMusicStore.getState().stop(); win.onClose?.(); closeWindow(win.id); }}
+            onClick={(e) => { e.stopPropagation(); if (win.app === 'music') useMusicStore.getState().stop(); closeWindow(win.id); }}
           />
         </div>
       </div>

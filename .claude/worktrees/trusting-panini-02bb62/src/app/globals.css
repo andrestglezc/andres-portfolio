@@ -1,0 +1,149 @@
+/* src/app/globals.css — Windows 98 theme */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --desktop-bg: #008080;
+  --menubar-h: 28px;
+  --window-bg: #FFFFFF;
+  --window-radius: 0px;
+  --text-primary: #000000;
+  --text-secondary: #444444;
+  --text-tertiary: #808080;
+  --accent: #000080;
+  --selection: rgba(0, 0, 128, 0.35);
+  --font-ui: 'MS Sans Serif', 'Microsoft Sans Serif', 'Segoe UI', Arial, sans-serif;
+  --font-content: 'MS Sans Serif', 'Microsoft Sans Serif', 'Segoe UI', Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  cursor: default;
+}
+
+a, button, [role="button"], .dock-icon, .finder-row, .desktop-icon, .start-button, .taskbar-btn, [data-traffic] {
+  cursor: pointer !important;
+}
+
+input, textarea {
+  cursor: text;
+}
+
+[style*="se-resize"] {
+  cursor: se-resize;
+}
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+  background: var(--desktop-bg);
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  cursor: default;
+  user-select: none;
+}
+
+.window-content {
+  user-select: text;
+  cursor: text;
+}
+
+/* Win98 scrollbars */
+::-webkit-scrollbar {
+  width: 17px;
+  height: 17px;
+}
+::-webkit-scrollbar-track {
+  background: #C0C0C0;
+  border: 1px solid #808080;
+}
+::-webkit-scrollbar-thumb {
+  background: #C0C0C0;
+  border-top: 2px solid #FFFFFF;
+  border-left: 2px solid #FFFFFF;
+  border-right: 2px solid #808080;
+  border-bottom: 2px solid #808080;
+}
+::-webkit-scrollbar-corner {
+  background: #C0C0C0;
+}
+::-webkit-scrollbar-button {
+  display: block;
+  background: #C0C0C0;
+  border-top: 2px solid #FFFFFF;
+  border-left: 2px solid #FFFFFF;
+  border-right: 2px solid #808080;
+  border-bottom: 2px solid #808080;
+  height: 17px;
+  width: 17px;
+}
+
+/* Finder / Explorer row */
+.finder-row {
+  cursor: default;
+  font-family: inherit;
+  font-size: 14px;
+  color: #000000;
+  transition: none;
+}
+.finder-row:hover {
+  background: rgba(0, 0, 128, 0.12);
+}
+.finder-row.selected {
+  background: #000080;
+  color: #FFFFFF;
+}
+
+.window-titlebar {
+  cursor: move;
+}
+
+/* Typewriter text — pre-formatted whitespace preserved */
+.typewriter {
+  font-family: inherit;
+  font-size: 15px;
+  line-height: 1.8;
+  color: #000000;
+  white-space: pre;
+}
+
+/* Selection */
+::selection {
+  background: #000080;
+  color: #FFFFFF;
+}
+
+/* Mobile fallback */
+@media (max-width: 767px) {
+  .desktop-only {
+    display: none !important;
+  }
+  .mobile-fallback {
+    display: flex !important;
+  }
+}
+@media (min-width: 768px) {
+  .mobile-fallback {
+    display: none !important;
+  }
+}
+
+nextjs-portal {
+  display: none !important;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@media (max-width: 767px) {
+  html, body { overflow: auto !important; height: auto !important; user-select: auto !important; }
+  body { overflow: auto !important; cursor: default !important; }
+}
