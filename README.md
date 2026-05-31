@@ -6,7 +6,7 @@
 
 ---
 
-![NostalgiaOS Desktop](public/wallpaper.png)
+![NostalgiaOS Desktop](public/preview.png)
 
 ---
 
@@ -36,28 +36,28 @@ It's a portfolio that makes you feel something before you've read a single line 
 
 ## Tech Stack
 
-| Layer | Technology |
-|-------|-----------|
-| Framework | Next.js 14 (App Router) |
-| Language | TypeScript |
-| Styling | Tailwind CSS + inline styles |
-| Animations | Framer Motion |
-| State | Zustand |
-| Fonts | MS Sans Serif / Inter |
-| Hosting | Vercel |
-| Domain | Namecheap |
+| Layer      | Technology                   |
+| ---------- | ---------------------------- |
+| Framework  | Next.js 14 (App Router)      |
+| Language   | TypeScript                   |
+| Styling    | Tailwind CSS + inline styles |
+| Animations | Framer Motion                |
+| State      | Zustand                      |
+| Fonts      | MS Sans Serif / Inter        |
+| Hosting    | Vercel                       |
+| Domain     | Namecheap                    |
 
 ---
 
 ## Case Studies
 
-| Project | Role | Industry |
-|---------|------|----------|
-| XPO Design System | Senior UX Technical Consultant · Perficient | Enterprise Logistics |
-| Entel Design System | UX/UI Designer | Telecommunications |
-| SKY Airline | UX Product Designer | Aviation |
-| GASCO | User Experience Design Lead | Energy |
-| Nsity App | UX Product Designer | Civic Tech |
+| Project             | Role                                        | Industry             |
+| ------------------- | ------------------------------------------- | -------------------- |
+| XPO Design System   | Senior UX Technical Consultant · Perficient | Enterprise Logistics |
+| Entel Design System | UX/UI Designer                              | Telecommunications   |
+| SKY Airline         | UX Product Designer                         | Aviation             |
+| GASCO               | User Experience Design Lead                 | Energy               |
+| Nsity App           | UX Product Designer                         | Civic Tech           |
 
 ---
 
@@ -99,4 +99,4 @@ Senior UX Technical Consultant @ Perficient · Founder @ TheMiraiLab
 
 ---
 
-*"There is something about this world, this time in tech and the internet, that I am pretty sure you miss too."*
+_"There is something about this world, this time in tech and the internet, that I am pretty sure you miss too."_
