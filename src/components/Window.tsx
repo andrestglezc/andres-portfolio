@@ -82,7 +82,6 @@ function JsonApp({ data }: { data: unknown }) {
 
 function CaseStudyApp({ studyKey }: { studyKey: CaseStudyKey }) {
   const study = content[studyKey] as typeof content[typeof studyKey] & { images?: string[] };
-  console.log('[CaseStudyApp]', studyKey, study, study.images);
   const { closeWindow, focusWindow, openWindow, windows } = useWindowStore();
   const [showScrollHint, setShowScrollHint] = useState(true);
   const rightColRef = useRef<HTMLDivElement>(null);
@@ -555,6 +554,7 @@ function ResumeApp() {
         src="/resume.pdf"
         style={{ flex: 1, width: '100%', border: 'none' }}
         title="Resume PDF"
+        sandbox="allow-scripts allow-same-origin"
       />
     </div>
   );
