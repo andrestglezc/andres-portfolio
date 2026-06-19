@@ -301,6 +301,35 @@ Sometimes faster — depends on the coffee. ☕
       },
     ],
   },
+  timpayne: {
+    images: ['/timpayne.jpg'],
+    title: 'No Payne No Gain',
+    period: '2026',
+    role: 'Solo Designer & Developer',
+    tags: ['Fan App', 'iOS', 'Solo Build'],
+    clients: [],
+    color: '#000000',
+    sections: [
+      {
+        heading: 'Context',
+        body: 'Tim Payne was the least-known player at the 2026 World Cup. A video from Argentine influencer El Scarso made him a meme overnight — 4,715 followers to 2.5M in 48 hours. His fan army ("el ejército") needed a home. I built the fan site and iOS app solo in a week.',
+      },
+      {
+        heading: 'Role',
+        body: 'End-to-end. Product, UX, UI, and front-end — design to ship, all solo.',
+      },
+      {
+        heading: 'Features',
+        body: 'Personalized holographic Panini-style figurine, a 70+ question quiz across 7 categories, match predictions with Payne Points and a leaderboard, and a viral chant generator.',
+      },
+      {
+        heading: 'Outcome',
+        body: 'Shipped in 5 days. Live fan site and a free iOS app on the App Store — no ads, no signup. Unofficial, made by a fan.',
+        link: { text: 'timpaynefans.com', href: 'https://www.timpaynefans.com' },
+      },
+    ],
+  },
+
   doom: {
     title: 'DOOM',
     period: '',
@@ -336,4 +365,4 @@ Sometimes faster — depends on the coffee. ☕
   },
 };
 
-export type CaseStudyKey = 'perficient' | 'sky' | 'entel' | 'gasco' | 'nsity' | 'xpo';
+export type CaseStudyKey = 'perficient' | 'sky' | 'entel' | 'gasco' | 'nsity' | 'xpo' | 'timpayne';

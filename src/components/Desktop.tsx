@@ -228,6 +228,30 @@ export default function Desktop() {
             O&apos;malley.exe
           </span>
         </div>
+
+        {/* Blog icon */}
+        <div
+          style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, cursor: 'default' }}
+          onClick={e => { e.stopPropagation(); setSelected('blog'); }}
+          onDoubleClick={e => {
+            e.stopPropagation();
+            openWindow({ ...defaultWindowProps('blog'), id: 'blog' });
+          }}
+        >
+          <div style={{ padding: 2, background: selected === 'blog' ? 'rgba(0,0,128,0.35)' : 'transparent', display: 'inline-flex' }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/icons/icon-readme.png" alt="Blog" style={{ width: 48, height: 48, objectFit: 'contain', display: 'block' }} />
+          </div>
+          <span style={{
+            fontSize: 11, fontFamily: 'inherit', color: '#FFFFFF', textAlign: 'center',
+            whiteSpace: 'nowrap', lineHeight: 1.3,
+            textShadow: '1px 1px 2px rgba(0,0,0,0.9), -1px -1px 2px rgba(0,0,0,0.9)',
+            background: selected === 'blog' ? '#000080' : 'transparent',
+            padding: '1px 3px',
+          }}>
+            Blog.exe
+          </span>
+        </div>
       </div>
     </div>
   );

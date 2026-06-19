@@ -23,7 +23,8 @@ export type AppType =
   | 'help'
   | 'shutdown'
   | 'music'
-  | 'shrine';
+  | 'shrine'
+  | 'blog';
 
 export interface WindowConfig {
   id: WindowId;
@@ -192,6 +193,7 @@ export function defaultWindowProps(
     shutdown:  { width: 420, height: 320, title: 'Shut Down Nostalgia OS' },
     music:     { width: 459, height: 560, title: 'Music Player' },
     shrine:    { width: 360, height: 620, title: "O'malley 🕯️" },
+    blog:      { width: 340, height: 200, title: 'Blog' },
   };
 
   return { ...base, ...sizes[app] };

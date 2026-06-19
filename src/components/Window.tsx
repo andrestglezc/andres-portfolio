@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
+import { Document, Page, pdfjs } from 'react-pdf';
 import { createPortal } from "react-dom";
 import { motion } from "framer-motion";
 import { useWindowStore, WindowConfig, AppType, WindowId } from "@/lib/windows";
@@ -12,6 +13,11 @@ import ShrineApp from "@/components/apps/ShrineApp";
 import { useMusicStore } from "@/lib/musicStore";
 import { content, CaseStudyKey } from "@/lib/content";
 import { filesystem, FolderNode, FSNode, FileNode } from "@/lib/filesystem";
+
+pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+  'pdfjs-dist/build/pdf.worker.min.mjs',
+  import.meta.url,
+).toString();
 
 // ─── Win98 beveled styles ─────────────────────────────────────────────────────
 
@@ -178,6 +184,13 @@ function CaseStudyApp({ studyKey }: { studyKey: CaseStudyKey }) {
               >
                 {section.body}
               </p>
+              {'link' in section && section.link && (
+                <a href={(section.link as { text: string; href: string }).href}
+                  target="_blank" rel="noreferrer"
+                  style={{ fontSize: 13, color: '#0000EE', display: 'block', marginTop: 6 }}>
+                  {(section.link as { text: string; href: string }).text}
+                </a>
+              )}
             </div>
           ))}
         </div>
@@ -491,6 +504,7 @@ function ContactApp() {
 }
 
 function ResumeApp() {
+  const [numPages, setNumPages] = useState<number>(0);
   return (
     <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', background: '#fff' }}>
       <div style={{
@@ -550,12 +564,27 @@ function ResumeApp() {
           Andres T. Gonzalez C. — CV 2026
         </span>
       </div>
-      <iframe
-        src="/resume.pdf"
-        style={{ flex: 1, width: '100%', border: 'none' }}
-        title="Resume PDF"
-        sandbox="allow-scripts allow-same-origin"
-      />
+      <div
+        className="window-content"
+        style={{ flex: 1, overflowY: 'auto', background: '#525659', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12, padding: '12px 0' }}
+      >
+        <Document
+          file="/resume.pdf"
+          onLoadSuccess={({ numPages }) => setNumPages(numPages)}
+          loading={<span style={{ color: '#fff', fontSize: 13, padding: 24 }}>Loading…</span>}
+          error={<span style={{ color: '#fff', fontSize: 13, padding: 24 }}>Failed to load PDF.</span>}
+        >
+          {Array.from({ length: numPages }, (_, i) => (
+            <Page
+              key={i + 1}
+              pageNumber={i + 1}
+              width={720}
+              renderAnnotationLayer={false}
+              renderTextLayer={false}
+            />
+          ))}
+        </Document>
+      </div>
     </div>
   );
 }
@@ -889,6 +918,26 @@ function Screensaver({ onDismiss }: { onDismiss: () => void }) {
   );
 }
 
+// ─── Blog app ─────────────────────────────────────────────────────────────────
+
+function BlogApp() {
+  return (
+    <div style={{
+      width: '100%',
+      height: '100%',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      background: '#FFFFFF',
+      fontFamily: 'inherit',
+      fontSize: 14,
+      color: '#000000',
+    }}>
+      Coming soon!
+    </div>
+  );
+}
+
 // ─── Shutdown app ─────────────────────────────────────────────────────────────
 
 function ShutdownApp({ windowId }: { windowId: WindowId }) {
@@ -972,6 +1021,7 @@ function ShutdownApp({ windowId }: { windowId: WindowId }) {
 // ─── Home app ─────────────────────────────────────────────────────────────────
 
 const WORK_CARDS = [
+  { key: 'timpayne'   as CaseStudyKey, company: 'No Payne No Gain', role: 'Fan App · Solo Designer & Builder',            bg: '#000000' },
   { key: 'nsity'      as CaseStudyKey, company: 'Nsity App',         role: 'UX Product Designer · London',               bg: '#00A876' },
   { key: 'sky'        as CaseStudyKey, company: 'SKY Airline',       role: 'UX Product Designer',                         bg: '#781878' },
   { key: 'xpo'        as CaseStudyKey, company: 'XPO Design System', role: 'Senior UX Technical Consultant · Perficient', bg: '#CC0000' },
@@ -1807,6 +1857,7 @@ export default function Window({ win }: { win: WindowConfig }) {
         {win.app === "help" && <HelpApp />}
         {win.app === "shutdown" && <ShutdownApp windowId={win.id} />}
         {win.app === "shrine" && <ShrineApp />}
+        {win.app === "blog" && <BlogApp />}
       </div>
 
       {/* Win98 resize grip */}

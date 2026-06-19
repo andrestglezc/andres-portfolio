@@ -28,6 +28,7 @@ export const filesystem: FolderNode = {
       name: 'Work',
       icon: '💼',
       children: [
+        { type: 'file', name: 'TimPayneFans.app', fileType: 'app', contentKey: 'timpayne',  icon: '⚽' },
         { type: 'file', name: 'Perficient.app',  fileType: 'app', contentKey: 'perficient', icon: '🏢' },
         { type: 'file', name: 'SKY_Airline.app', fileType: 'app', contentKey: 'sky',        icon: '✈️' },
         { type: 'file', name: 'Entel_DS.app',    fileType: 'app', contentKey: 'entel',      icon: '📡' },
