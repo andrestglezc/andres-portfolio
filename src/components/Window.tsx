@@ -234,12 +234,27 @@ function CaseStudyApp({ studyKey }: { studyKey: CaseStudyKey }) {
       >
         {study.images && study.images.length > 0 ? (
           study.images.map((src, i) => (
-            <img
-              key={i}
-              src={src}
-              alt={`${study.title} preview ${i + 1}`}
-              style={{ width: '100%', objectFit: 'contain', display: 'block', background: '#1a1a1a' }}
-            />
+            src.endsWith('.mp4') ? (
+              <video
+                key={i}
+                src={src}
+                autoPlay
+                loop
+                muted
+                playsInline
+                aria-label={`${study.title} preview ${i + 1}`}
+                style={{ width: '100%', objectFit: 'contain', display: 'block', background: '#1a1a1a' }}
+              />
+            ) : (
+              <img
+                key={i}
+                src={src}
+                alt={`${study.title} preview ${i + 1}`}
+                loading="lazy"
+                decoding="async"
+                style={{ width: '100%', objectFit: 'contain', display: 'block', background: '#1a1a1a' }}
+              />
+            )
           ))
         ) : (
           <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.3)', userSelect: 'none' }}>
@@ -1012,7 +1027,7 @@ function ProfilePhoto() {
   }
   return (
     <img
-      src="/profile.png"
+      src="/profile.jpg"
       alt="Andres T. Gonzalez C."
       onError={() => setFailed(true)}
       style={{ ...photoStyle, objectFit: 'cover', display: 'block' }}

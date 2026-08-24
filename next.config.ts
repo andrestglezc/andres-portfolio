@@ -3,7 +3,7 @@ import type { NextConfig } from "next";
 // CSP allows same-origin resources only.
 // 'unsafe-inline' for style-src is required because React uses inline styles throughout.
 // blob: in connect-src covers audio/Blob URLs used by the music player.
-// frame-src 'self' keeps the resume PDF iframe working inside the OS window.
+// frame-src 'none': nothing on the site embeds an iframe (the resume renders via react-pdf canvas).
 const CSP = [
   "default-src 'self'",
   // 'unsafe-inline' is required: Next.js injects inline bootstrap scripts for hydration
@@ -12,7 +12,7 @@ const CSP = [
   "img-src 'self' data: blob:",
   "media-src 'self' blob:",
   "font-src 'self' data:",
-  "frame-src 'self'",
+  "frame-src 'none'",
   "frame-ancestors 'self'",
   "connect-src 'self' blob:",
   "base-uri 'self'",
@@ -40,6 +40,7 @@ const nextConfig: NextConfig = {
           { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },
           { key: 'Cross-Origin-Opener-Policy', value: 'same-origin' },
           { key: 'Cross-Origin-Embedder-Policy', value: 'require-corp' },
+          { key: 'Cross-Origin-Resource-Policy', value: 'same-origin' },
           { key: 'Content-Security-Policy', value: CSP },
         ],
       },

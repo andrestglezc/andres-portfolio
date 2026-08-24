@@ -4,10 +4,13 @@ export default function AoeApp() {
   return (
     <div style={{ width: '100%', height: '100%', background: '#000', display: 'flex', flexDirection: 'column' }}>
       <div style={{ flex: 1, overflow: 'hidden' }}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/aoe.gif"
-          alt="Age of Empires gameplay"
+        <video
+          src="/aoe.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+          aria-label="Age of Empires gameplay"
           style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
         />
       </div>

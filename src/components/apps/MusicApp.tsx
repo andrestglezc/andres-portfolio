@@ -41,7 +41,7 @@ export default function MusicApp() {
           animationPlayState: playing ? 'running' : 'paused',
         }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={track.cover} alt={track.title} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+          <img src={track.cover} alt={track.title} loading="lazy" decoding="async" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
           <div style={{ width: 20, height: 20, borderRadius: '50%', background: '#FFFFFF', position: 'absolute', boxShadow: '0 0 0 2px #999' }} />
         </div>
       </div>

@@ -4,10 +4,13 @@ export default function SimsApp() {
   return (
     <div style={{ width: '100%', height: '100%', background: '#000', display: 'flex', flexDirection: 'column' }}>
       <div style={{ flex: 1, overflow: 'hidden' }}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/sims.gif"
-          alt="The Sims gameplay"
+        <video
+          src="/sims.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+          aria-label="The Sims gameplay"
           style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
         />
       </div>

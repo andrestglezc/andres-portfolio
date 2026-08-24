@@ -75,6 +75,8 @@ function OmalleyPhoto() {
     <img
       src="/omalley.jpg"
       alt="O'malley"
+      loading="lazy"
+      decoding="async"
       onError={() => setFailed(true)}
       style={{ ...circleStyle, objectFit: 'cover', display: 'block' }}
     />

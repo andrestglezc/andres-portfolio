@@ -225,7 +225,7 @@ Sometimes faster — depends on the coffee. ☕
     tags: ['Design Systems', 'Telco', 'Scale'],
     clients: ["Entel — Chile's largest telco"],
     color: '#1A0A3D',
-    images: ['/entel-1.gif', '/entel-2.gif', '/entel-3.jpg'],
+    images: ['/entel-1.mp4', '/entel-2.mp4', '/entel-3.jpg'],
     sections: [
       {
         heading: 'Context',

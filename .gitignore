@@ -39,3 +39,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local-only working files (untracked on purpose — see commit 766a9a7)
+CLAUDE.md
+DAILY_LOG.md
+
+# claude code local config
+.claude/settings.local.json
+.claude/worktrees/
