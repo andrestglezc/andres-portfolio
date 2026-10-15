@@ -5,12 +5,16 @@ import { content } from '@/lib/content';
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
+// Same order as the desktop Work grid (WORK_CARDS in Window.tsx).
 const CASE_STUDIES = [
+  content.tabhero,
+  content.timpayne,
   content.nsity,
-  content.xpo,
   content.sky,
+  content.xpo,
   content.gasco,
   content.entel,
+  content.perficient,
 ] as const;
 
 const SKILL_LABELS: Record<string, string> = {
@@ -89,8 +93,22 @@ function Lightbox({
       onClick={onClose}
       style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.92)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 16, padding: 16 }}
     >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={images[index]} alt={`Image ${index + 1}`} onClick={e => e.stopPropagation()} style={{ maxWidth: '100%', maxHeight: '75vh', objectFit: 'contain' }} />
+      {images[index].endsWith('.mp4') ? (
+        <video
+          key={images[index]}
+          src={images[index]}
+          autoPlay
+          loop
+          muted
+          playsInline
+          aria-label={`Video ${index + 1}`}
+          onClick={e => e.stopPropagation()}
+          style={{ maxWidth: '100%', maxHeight: '75vh', objectFit: 'contain' }}
+        />
+      ) : (
+        /* eslint-disable-next-line @next/next/no-img-element */
+        <img src={images[index]} alt={`Image ${index + 1}`} onClick={e => e.stopPropagation()} style={{ maxWidth: '100%', maxHeight: '75vh', objectFit: 'contain' }} />
+      )}
       <div onClick={e => e.stopPropagation()} style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
         {images.length > 1 && <button onClick={onPrev} style={{ ...win98Btn, fontSize: 18, padding: '4px 14px' }}>‹</button>}
         <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: 12, fontFamily: MS }}>

@@ -1458,7 +1458,7 @@ function HomeApp() {
           flexShrink: 0,
         }}
       >
-        <div style={statusInset}>4 case studies</div>
+        <div style={statusInset}>{WORK_CARDS.length} case studies</div>
         <div style={{ ...statusInset, marginLeft: 'auto' }}>
           Open to remote · Santiago, Chile
         </div>
