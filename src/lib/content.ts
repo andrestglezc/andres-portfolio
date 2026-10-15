@@ -301,6 +301,39 @@ Sometimes faster — depends on the coffee. ☕
       },
     ],
   },
+  tabhero: {
+    images: ['/tabhero-1.jpg', '/tabhero-2.jpg'],
+    title: 'Tab Hero — Snap any tab. Play it now.',
+    period: '2026',
+    role: 'Solo Designer & Developer',
+    tags: ['Music', 'Web App', 'Computer Vision', 'Solo Build'],
+    clients: [],
+    color: '#0B1120',
+    sections: [
+      {
+        heading: 'Context',
+        body: "I'm learning songs on electric guitar, and a tab is a static page: it says where to put your fingers, not when, how fast, or whether you got it right. I wanted the Guitar Hero loop — see it coming, play it, get scored — for any tab. So I built it.",
+      },
+      {
+        heading: 'Role',
+        body: 'End-to-end, solo: product, UX, UI, front-end, the computer-vision engine and deployment. Built with Claude Code.',
+      },
+      {
+        heading: 'What it does',
+        body: 'Snap a photo of a printed or handwritten tab, paste a screenshot, or drop in ASCII text. Tab Hero reads it and plays it back across four views on one clock: a 3D fretboard, a Guitar-Hero-style highway, a synced reference video or webcam, and a chord map with roman numerals. Play along on the keyboard or with a real guitar through the mic.',
+      },
+      {
+        heading: 'Under the hood',
+        body: 'React 19, TypeScript, React Three Fiber, PixiJS and Web Audio. A FastAPI engine with OpenCV and a small numpy MLP reads the photos and underlines any digit it is unsure of for a one-click fix. Count-in, 25–150% speed at the same pitch, A/B looping, 15 tunings, a Karplus–Strong synth, scoring. 70+ test files.',
+      },
+      {
+        heading: 'Outcome',
+        body: 'Live, free, no sign-up, runs in the browser.',
+        link: { text: 'tab-hero.vercel.app', href: 'https://tab-hero.vercel.app' },
+      },
+    ],
+  },
+
   timpayne: {
     images: ['/timpayne.jpg'],
     title: 'No Payne No Gain',
@@ -365,4 +398,4 @@ Sometimes faster — depends on the coffee. ☕
   },
 };
 
-export type CaseStudyKey = 'perficient' | 'sky' | 'entel' | 'gasco' | 'nsity' | 'xpo' | 'timpayne';
+export type CaseStudyKey = 'perficient' | 'sky' | 'entel' | 'gasco' | 'nsity' | 'xpo' | 'timpayne' | 'tabhero';

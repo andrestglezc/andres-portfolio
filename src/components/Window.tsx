@@ -947,6 +947,7 @@ function ShutdownApp({ windowId }: { windowId: WindowId }) {
 // ─── Home app ─────────────────────────────────────────────────────────────────
 
 const WORK_CARDS = [
+  { key: 'tabhero'    as CaseStudyKey, company: 'Tab Hero',          role: 'Guitar App · Solo Designer & Builder',         bg: '#4C2BB3' },
   { key: 'timpayne'   as CaseStudyKey, company: 'No Payne No Gain', role: 'Fan App · Solo Designer & Builder',            bg: '#000000' },
   { key: 'nsity'      as CaseStudyKey, company: 'Nsity App',         role: 'UX Product Designer · London',               bg: '#00A876' },
   { key: 'sky'        as CaseStudyKey, company: 'SKY Airline',       role: 'UX Product Designer',                         bg: '#781878' },
