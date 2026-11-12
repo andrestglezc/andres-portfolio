@@ -2,7 +2,7 @@
 
 > A Windows 98-inspired interactive portfolio — because flat design had its moment, but we miss the clouds.
 
-**Live:** [atgc.design](https://atgc.design)
+**Live:** [atgc.design](https://www.atgc.design)
 
 ---
 
@@ -38,12 +38,12 @@ It's a portfolio that makes you feel something before you've read a single line 
 
 | Layer      | Technology                   |
 | ---------- | ---------------------------- |
-| Framework  | Next.js 14 (App Router)      |
+| Framework  | Next.js 16 (App Router)      |
 | Language   | TypeScript                   |
 | Styling    | Tailwind CSS + inline styles |
 | Animations | Framer Motion                |
 | State      | Zustand                      |
-| Fonts      | MS Sans Serif / Inter        |
+| Fonts      | MS Sans Serif (system)       |
 | Hosting    | Vercel                       |
 | Domain     | Namecheap                    |
 
@@ -53,11 +53,14 @@ It's a portfolio that makes you feel something before you've read a single line 
 
 | Project             | Role                                        | Industry             |
 | ------------------- | ------------------------------------------- | -------------------- |
-| XPO Design System   | Senior UX Technical Consultant · Perficient | Enterprise Logistics |
-| Entel Design System | UX/UI Designer                              | Telecommunications   |
-| SKY Airline         | UX Product Designer                         | Aviation             |
-| GASCO               | User Experience Design Lead                 | Energy               |
+| Tab Hero            | Solo Designer & Developer                   | Music / Web App      |
+| No Payne No Gain    | Solo Designer & Developer                   | Fan App / iOS        |
 | Nsity App           | UX Product Designer                         | Civic Tech           |
+| SKY Airline         | UX Product Designer                         | Aviation             |
+| XPO Design System   | Senior UX Technical Consultant · Perficient | Enterprise Logistics |
+| GASCO               | User Experience Design Lead                 | Energy               |
+| Entel Design System | UX/UI Designer · Design System Lead         | Telecommunications   |
+| Perficient          | Senior UX Technical Consultant              | Enterprise           |
 
 ---
 
@@ -92,7 +95,7 @@ The entire portfolio — from concept to deployed site — was completed in a si
 Senior UX Product Designer · AI × UX  
 Senior UX Technical Consultant @ Perficient · Founder @ TheMiraiLab
 
-- 🌐 [atgc.design](https://atgc.design)
+- 🌐 [atgc.design](https://www.atgc.design)
 - 💼 [linkedin.com/in/andres-gonzalez-ux](https://linkedin.com/in/andres-gonzalez-ux)
 - ✉️ andres.t.glez.c@gmail.com
 - 📍 Santiago, Chile · Open to remote

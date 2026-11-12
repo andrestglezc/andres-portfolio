@@ -113,13 +113,6 @@ export default function MusicApp() {
       <div style={{ textAlign: 'center', fontSize: 10, color: '#808080', padding: '0 8px 6px', flexShrink: 0 }}>
         All songs belong to their respective owners and copyright holders.
       </div>
-
-      <style>{`
-        @keyframes vinylSpin {
-          from { transform: rotate(0deg); }
-          to   { transform: rotate(360deg); }
-        }
-      `}</style>
     </div>
   );
 }

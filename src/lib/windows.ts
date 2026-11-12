@@ -86,13 +86,15 @@ export const useWindowStore = create<WindowStore>((set, get) => ({
   },
 
   closeWindow: (id) =>
-    set(state => ({
-      windows: state.windows.filter(w => w.id !== id),
-      activeWindowId:
-        state.activeWindowId === id
-          ? state.windows[state.windows.length - 2]?.id ?? null
-          : state.activeWindowId,
-    })),
+    set(state => {
+      const windows = state.windows.filter(w => w.id !== id);
+      if (state.activeWindowId !== id) return { windows };
+      // Hand focus to the topmost visible window, not just the previous array entry.
+      const next = windows
+        .filter(w => !w.isMinimized)
+        .sort((a, b) => b.zIndex - a.zIndex)[0];
+      return { windows, activeWindowId: next?.id ?? null };
+    }),
 
   focusWindow: (id) =>
     set(state => ({
@@ -183,12 +185,12 @@ export function defaultWindowProps(
     contact:   { width: 420, height: 340, title: 'Contact' },
     resume:    { width: 780, height: 680, title: 'Resume.pdf' },
     about:     { width: 480, height: 400, title: 'About Me' },
-    doom:      { width: 640, height: 480, title: 'DOOM.exe' },
+    doom:      { width: 640, height: 680, title: 'DOOM.exe' },
     aoe:       { width: 640, height: 480, title: 'Age of Empires.exe' },
     sims:      { width: 640, height: 480, title: 'The Sims.exe' },
     sysinfo:   { width: 420, height: 380, title: 'System Properties' },
     find:      { width: 380, height: 320, title: 'Find: All Files' },
-    run:       { width: 340, height: 320, title: 'Run' },
+    run:       { width: 340, height: 220, title: 'Run' },
     help:      { width: 480, height: 400, title: 'Windows Help' },
     shutdown:  { width: 420, height: 320, title: 'Shut Down Nostalgia OS' },
     music:     { width: 459, height: 560, title: 'Music Player' },

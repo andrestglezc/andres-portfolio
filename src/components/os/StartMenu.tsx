@@ -5,6 +5,7 @@ import { useWindowStore } from '@/lib/windows';
 import type { AppType } from '@/lib/windows';
 import { filesystem } from '@/lib/filesystem';
 import type { FolderNode } from '@/lib/filesystem';
+import { content } from '@/lib/content';
 
 interface Props {
   onClose: () => void;
@@ -183,7 +184,7 @@ export default function StartMenu({ onClose }: Props) {
         <SubItem icon="👤" label="About Me"  onClick={() => openApp('about',   'about',   'About Me',    480, 400)} />
         <SubItem icon="📄" label="Resume"    onClick={() => openApp('resume',  'resume',  'Resume.pdf',  780, 680)} />
         <SubItem icon="✉️" label="Contact"   onClick={() => openApp('contact', 'contact', 'Contact.txt', 420, 340)} />
-        <SubItem icon="🎮" label="DOOM.exe"  onClick={() => openApp('doom',    'doom',    'DOOM.exe',    680, 680)} />
+        <SubItem icon="🎮" label="DOOM.exe"  onClick={() => openApp('doom',    'doom',    'DOOM.exe',    640, 680)} />
       </div>
     </Submenu>
   );
@@ -191,12 +192,9 @@ export default function StartMenu({ onClose }: Props) {
   const documentsSubmenu = (
     <Submenu>
       <div onMouseEnter={submenuEnter} onMouseLeave={leave}>
-        {[
-          { label: 'Nsity Case Study',   key: 'nsity' },
-          { label: 'XPO Design System',  key: 'xpo' },
-          { label: 'SKY Airline',        key: 'sky' },
-          { label: 'GASCO',              key: 'gasco' },
-        ].map(cs => (
+        {(['tabhero', 'timpayne', 'nsity', 'sky', 'xpo', 'gasco', 'entel', 'perficient'] as const)
+          .map(key => ({ key, label: content[key].title }))
+          .map(cs => (
           <SubItem
             key={cs.key}
             icon="📋"
@@ -231,7 +229,7 @@ export default function StartMenu({ onClose }: Props) {
     { key: 'settings',  icon: '⚙️', label: 'Settings',    action: () => openApp('sysinfo',  'sysinfo',  'System Properties',  420, 380) },
     { key: 'find',      icon: '🔍', label: 'Find',        action: () => openApp('find',     'find',     'Find: All Files',    380, 320) },
     { key: 'help',      icon: '❓', label: 'Help',        action: () => openApp('help',     'help',     'Windows Help',       480, 400) },
-    { key: 'run',       icon: '🏃', label: 'Run...',      action: () => openApp('run',      'run',      'Run',                340, 170) },
+    { key: 'run',       icon: '🏃', label: 'Run...',      action: () => openApp('run',      'run',      'Run',                340, 220) },
   ];
 
   return (

@@ -25,7 +25,7 @@
   cursor: default;
 }
 
-a, button, [role="button"], .dock-icon, .finder-row, .desktop-icon, .start-button, .taskbar-btn, [data-traffic] {
+a, button, [role="button"], .finder-row, [data-traffic] {
   cursor: pointer !important;
 }
 
@@ -119,23 +119,13 @@ body {
   color: #FFFFFF;
 }
 
-/* Mobile fallback */
-@media (max-width: 767px) {
-  .desktop-only {
-    display: none !important;
-  }
-  .mobile-fallback {
-    display: flex !important;
-  }
-}
-@media (min-width: 768px) {
-  .mobile-fallback {
-    display: none !important;
-  }
-}
-
 nextjs-portal {
   display: none !important;
+}
+
+@keyframes vinylSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
 }
 
 @keyframes bounce {

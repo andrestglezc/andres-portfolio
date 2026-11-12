@@ -16,15 +16,6 @@ import { filesystem, FolderNode, FSNode, FileNode } from "@/lib/filesystem";
 
 const ResumeApp = dynamic(() => import('@/components/apps/ResumeApp'), { ssr: false });
 
-// ─── Win98 beveled styles ─────────────────────────────────────────────────────
-
-const bevelUp: React.CSSProperties = {
-  borderTop: "2px solid #FFFFFF",
-  borderLeft: "2px solid #FFFFFF",
-  borderRight: "2px solid #808080",
-  borderBottom: "2px solid #808080",
-};
-
 // ─── Typewriter hook ──────────────────────────────────────────────────────────
 
 function useTypewriter(text: string) {
@@ -584,14 +575,17 @@ function SysInfoApp() {
 
 // ─── Find app ─────────────────────────────────────────────────────────────────
 
+// Built from content.ts so new case studies are searchable without touching this list.
+const CASE_STUDY_KEYS: CaseStudyKey[] = ['tabhero', 'timpayne', 'nsity', 'sky', 'xpo', 'gasco', 'entel', 'perficient'];
+
 const FINDABLE = [
-  { label: 'Nsity Case Study',  id: 'casestudy-nsity',  app: 'casestudy' as AppType, props: { contentKey: 'nsity' },  title: 'Nsity Case Study',  width: 780, height: 540 },
-  { label: 'XPO Design System', id: 'casestudy-xpo',   app: 'casestudy' as AppType, props: { contentKey: 'xpo' },   title: 'XPO Design System', width: 780, height: 540 },
-  { label: 'SKY Airline',       id: 'casestudy-sky',   app: 'casestudy' as AppType, props: { contentKey: 'sky' },   title: 'SKY Airline',       width: 780, height: 540 },
-  { label: 'GASCO',             id: 'casestudy-gasco', app: 'casestudy' as AppType, props: { contentKey: 'gasco' }, title: 'GASCO',             width: 780, height: 540 },
-  { label: 'Resume',            id: 'resume',          app: 'resume'    as AppType, props: {},                       title: 'Resume.pdf',        width: 780, height: 680 },
-  { label: 'About Me',          id: 'about',           app: 'about'     as AppType, props: {},                       title: 'About Me',          width: 480, height: 400 },
-  { label: 'Contact',           id: 'contact',         app: 'contact'   as AppType, props: {},                       title: 'Contact.txt',       width: 420, height: 340 },
+  ...CASE_STUDY_KEYS.map(key => ({
+    label: content[key].title, id: `casestudy-${key}`, app: 'casestudy' as AppType,
+    props: { contentKey: key } as Record<string, unknown>, title: content[key].title, width: 780, height: 540,
+  })),
+  { label: 'Resume',   id: 'resume',  app: 'resume'  as AppType, props: {} as Record<string, unknown>, title: 'Resume.pdf',  width: 780, height: 680 },
+  { label: 'About Me', id: 'about',   app: 'about'   as AppType, props: {} as Record<string, unknown>, title: 'About Me',    width: 480, height: 400 },
+  { label: 'Contact',  id: 'contact', app: 'contact' as AppType, props: {} as Record<string, unknown>, title: 'Contact.txt', width: 420, height: 340 },
 ];
 
 function FindApp() {
@@ -662,10 +656,10 @@ function FindApp() {
 
 // ─── Run app ──────────────────────────────────────────────────────────────────
 
-function RunApp() {
+function RunApp({ windowId }: { windowId: WindowId }) {
   const [cmd, setCmd] = useState('');
   const [error, setError] = useState('');
-  const { openWindow, windows, focusWindow } = useWindowStore();
+  const { openWindow, windows, focusWindow, closeWindow } = useWindowStore();
 
   const workFolder = filesystem.children.find(n => n.type === 'folder' && n.name === 'Work') as FolderNode | undefined;
 
@@ -685,7 +679,7 @@ function RunApp() {
       mail:      () => activate('contact', () => openWindow({ id: 'contact', app: 'contact', title: 'Contact.txt', props: {}, x: 120, y: 80, width: 420, height: 340 })),
       about:     () => activate('about',   () => openWindow({ id: 'about',   app: 'about',   title: 'About Me',    props: {}, x: 120, y: 80, width: 480, height: 400 })),
       bio:       () => activate('about',   () => openWindow({ id: 'about',   app: 'about',   title: 'About Me',    props: {}, x: 120, y: 80, width: 480, height: 400 })),
-      doom:      () => activate('doom',    () => openWindow({ id: 'doom',    app: 'doom',    title: 'DOOM.exe',    props: {}, x: 120, y: 80, width: 680, height: 680 })),
+      doom:      () => activate('doom',    () => openWindow({ id: 'doom',    app: 'doom',    title: 'DOOM.exe',    props: {}, x: 120, y: 80, width: 640, height: 680 })),
       help:      () => activate('help',    () => openWindow({ id: 'help',    app: 'help',    title: 'Windows Help', props: {}, x: 120, y: 80, width: 480, height: 400 })),
     };
     if (map[c]) { map[c](); setError(''); }
@@ -699,7 +693,7 @@ function RunApp() {
   };
 
   return (
-    <div style={{ background: '#C0C0C0', position: 'relative', minHeight: 320, height: '100%', padding: '16px 24px 0 24px', fontFamily: 'MS Sans Serif, Arial, sans-serif', fontSize: 12 }}>
+    <div style={{ background: '#C0C0C0', position: 'relative', height: '100%', padding: '16px 24px 0 24px', fontFamily: 'MS Sans Serif, Arial, sans-serif', fontSize: 12 }}>
       <div style={{ display: 'flex', gap: 12 }}>
         <div style={{ fontSize: 36, lineHeight: 1 }}>🏃</div>
         <div style={{ flex: 1 }}>
@@ -719,8 +713,7 @@ function RunApp() {
       </div>
       <div style={{ position: 'absolute', bottom: 16, left: 24, right: 24, display: 'flex', justifyContent: 'flex-end', gap: 6 }}>
         <button onClick={run} style={btn98}>OK</button>
-        <button style={btn98}>Cancel</button>
-        <button style={btn98}>Browse...</button>
+        <button onClick={() => closeWindow(windowId)} style={btn98}>Cancel</button>
       </div>
     </div>
   );
@@ -1780,7 +1773,7 @@ export default function Window({ win }: { win: WindowConfig }) {
         {win.app === "music" && <MusicApp />}
         {win.app === "sysinfo" && <SysInfoApp />}
         {win.app === "find" && <FindApp />}
-        {win.app === "run" && <RunApp />}
+        {win.app === "run" && <RunApp windowId={win.id} />}
         {win.app === "help" && <HelpApp />}
         {win.app === "shutdown" && <ShutdownApp windowId={win.id} />}
         {win.app === "shrine" && <ShrineApp />}

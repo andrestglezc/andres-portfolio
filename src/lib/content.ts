@@ -153,7 +153,7 @@ Location: Santiago, Chile · Open to remote
 ————————————————————————————————
 
 Close this file and click the envelope icon
-in the dock to send me a message directly.
+in the taskbar to send me a message directly.
 
 I usually write back within 24 hours.
 Sometimes faster — depends on the coffee. ☕
@@ -361,16 +361,6 @@ Sometimes faster — depends on the coffee. ☕
         link: { text: 'timpaynefans.com', href: 'https://www.timpaynefans.com' },
       },
     ],
-  },
-
-  doom: {
-    title: 'DOOM',
-    period: '',
-    role: '',
-    tags: [],
-    clients: [],
-    color: '#8B0000',
-    sections: [],
   },
 
   xpo: {

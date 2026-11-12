@@ -5,7 +5,6 @@ import MobileSite from '@/components/mobile/MobileSite';
 import BootScreen from '@/components/os/BootScreen';
 import Desktop from '@/components/Desktop';
 import Menubar from '@/components/Menubar';
-import Dock from '@/components/Dock';
 import WindowManager from '@/components/WindowManager';
 import MiniPlayer from '@/components/MiniPlayer';
 import { useWindowStore } from '@/lib/windows';
@@ -26,6 +25,10 @@ export default function Home() {
   const { openWindow, closeWindow, setWindowZIndex, windows } = useWindowStore();
   const [mounted, setMounted] = useState(false);
   const [booted, setBooted] = useState(false);
+
+  const [prevReadmeOpen, setPrevReadmeOpen] = useState(false);
+  const [readmeEverOpened, setReadmeEverOpened] = useState(false);
+  const [showOverlay, setShowOverlay] = useState(true);
 
   // isMobile via useSyncExternalStore — no setState call in an effect body.
   const isMobile = useSyncExternalStore(mqSubscribe, getMqSnapshot, getMqServerSnapshot);
@@ -77,10 +80,6 @@ export default function Home() {
   // Render-phase derived state (React's "storing information from previous renders"
   // pattern — react.dev/reference/react/useState#storing-information-from-previous-renders).
   // Avoids calling setState inside effect bodies for these transitions.
-  const [prevReadmeOpen, setPrevReadmeOpen] = useState(false);
-  const [readmeEverOpened, setReadmeEverOpened] = useState(false);
-  const [showOverlay, setShowOverlay] = useState(true);
-
   if (readmeOpen !== prevReadmeOpen) {
     setPrevReadmeOpen(readmeOpen);
     if (readmeOpen && !readmeEverOpened) {
@@ -129,7 +128,6 @@ export default function Home() {
           }}
         />
       )}
-      <Dock />
       <MiniPlayer />
     </>
   );

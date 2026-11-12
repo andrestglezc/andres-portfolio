@@ -21,11 +21,15 @@ export const TRACKS = [
 
 // Module-level audio singleton — survives React unmounts
 let _audio: HTMLAudioElement | null = null;
+// Seek requested before metadata has loaded (preload is 'none'); applied on loadedmetadata.
+let _pendingSeek: number | null = null;
 
 export function getAudio(): HTMLAudioElement | null {
   if (typeof window === 'undefined') return null;
   if (!_audio) {
-    _audio = new Audio(TRACKS[0].src);
+    _audio = new Audio();
+    _audio.preload = 'none';
+    _audio.src = TRACKS[0].src;
   }
   return _audio;
 }
@@ -72,6 +76,7 @@ export const useMusicStore = create<MusicState & MusicActions>((set, get) => ({
     const audio = getAudio();
     if (audio) {
       audio.pause();
+      _pendingSeek = null;
       audio.src = TRACKS[idx].src;
       audio.currentTime = 0;
     }
@@ -84,6 +89,7 @@ export const useMusicStore = create<MusicState & MusicActions>((set, get) => ({
     const audio = getAudio();
     if (audio) {
       audio.pause();
+      _pendingSeek = null;
       audio.src = TRACKS[nextIdx].src;
       audio.load();
       audio.play().catch(() => {});
@@ -97,6 +103,7 @@ export const useMusicStore = create<MusicState & MusicActions>((set, get) => ({
     const audio = getAudio();
     if (audio) {
       audio.pause();
+      _pendingSeek = null;
       audio.src = TRACKS[prevIdx].src;
       audio.load();
       audio.play().catch(() => {});
@@ -106,16 +113,28 @@ export const useMusicStore = create<MusicState & MusicActions>((set, get) => ({
 
   seek: (pct) => {
     const audio = getAudio();
-    if (audio && audio.duration) {
+    if (!audio) return;
+    if (audio.duration) {
       audio.currentTime = (pct / 100) * audio.duration;
-      set({ progress: pct });
+    } else {
+      // Nothing is loaded yet: remember the position and fetch metadata only.
+      _pendingSeek = pct;
+      audio.preload = 'metadata';
+      audio.load();
     }
+    set({ progress: pct });
   },
 }));
 
 // Wire up audio event listeners once at module load (client-side only)
 if (typeof window !== 'undefined') {
   const audio = getAudio()!;
+  audio.addEventListener('loadedmetadata', () => {
+    if (_pendingSeek !== null && audio.duration) {
+      audio.currentTime = (_pendingSeek / 100) * audio.duration;
+    }
+    _pendingSeek = null;
+  });
   audio.addEventListener('timeupdate', () => {
     if (audio.duration) {
       useMusicStore.setState({ progress: (audio.currentTime / audio.duration) * 100 });
