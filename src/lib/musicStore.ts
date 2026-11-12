@@ -1,13 +1,15 @@
 import { create } from 'zustand';
+import type { StringKey } from './strings';
 
-export const TRACKS = [
+/** `noteKey` is the "Why I love this" note, an interface string (src/lib/strings.ts). */
+export const TRACKS: { id: number; title: string; artist: string; src: string; cover: string; noteKey: StringKey }[] = [
   {
     id: 1,
     title: 'Fly Me to the Moon',
     artist: 'Frank Sinatra',
     src: '/fly-me-to-the-moon.mp3',
     cover: '/cover-flymetothemoon.jpg',
-    note: "I love this song — it brings so much nostalgia. And for an awesome anime ending song... if you know, you know. 🌙",
+    noteKey: 'music.note.fly',
   },
   {
     id: 2,
@@ -15,113 +17,96 @@ export const TRACKS = [
     artist: 'Jimi Hendrix',
     src: '/hey-joe.mp3',
     cover: '/cover-heyjoe.jpg',
-    note: "Hey Joe was the song that inspired me to learn and play guitar. So iconic, so classic — and somehow still feels completely modern.",
+    noteKey: 'music.note.joe',
   },
 ];
-
-// Module-level audio singleton — survives React unmounts
-let _audio: HTMLAudioElement | null = null;
-
-export function getAudio(): HTMLAudioElement | null {
-  if (typeof window === 'undefined') return null;
-  if (!_audio) {
-    _audio = new Audio(TRACKS[0].src);
-  }
-  return _audio;
-}
 
 interface MusicState {
   trackIndex: number;
   playing: boolean;
   progress: number;
-}
-
-interface MusicActions {
   togglePlay: () => void;
   stop: () => void;
-  switchTrack: (idx: number) => void;
+  switchTrack: (idx: number, autoplay?: boolean) => void;
   next: () => void;
   prev: () => void;
   seek: (pct: number) => void;
 }
 
-export const useMusicStore = create<MusicState & MusicActions>((set, get) => ({
+// Audio element is created lazily on first use, so no MP3 is fetched
+// until the visitor actually presses play.
+let audio: HTMLAudioElement | null = null;
+// A seek asked for before the track's length is known (preload is 'none'); applied once metadata loads.
+let pendingSeek: number | null = null;
+
+function getAudio(): HTMLAudioElement | null {
+  if (typeof window === 'undefined') return null;
+  if (!audio) {
+    audio = new Audio();
+    audio.preload = 'none';
+    audio.src = TRACKS[useMusicStore.getState().trackIndex].src;
+    audio.addEventListener('timeupdate', () => {
+      if (audio && audio.duration) {
+        useMusicStore.setState({ progress: (audio.currentTime / audio.duration) * 100 });
+      }
+    });
+    audio.addEventListener('loadedmetadata', () => {
+      if (audio && pendingSeek !== null && audio.duration) audio.currentTime = (pendingSeek / 100) * audio.duration;
+      pendingSeek = null;
+    });
+    // Auto-advance through the playlist.
+    audio.addEventListener('ended', () => useMusicStore.getState().next());
+  }
+  return audio;
+}
+
+export const useMusicStore = create<MusicState>((set, get) => ({
   trackIndex: 0,
   playing: false,
   progress: 0,
 
   stop: () => {
-    const audio = getAudio();
-    if (audio) audio.pause();
+    audio?.pause();
     set({ playing: false });
   },
 
   togglePlay: () => {
-    const audio = getAudio();
-    if (!audio) return;
+    const a = getAudio();
+    if (!a) return;
     if (get().playing) {
-      audio.pause();
+      a.pause();
       set({ playing: false });
     } else {
-      audio.play().catch(() => {});
+      a.play().catch(() => set({ playing: false }));
       set({ playing: true });
     }
   },
 
-  switchTrack: (idx) => {
-    const audio = getAudio();
-    if (audio) {
-      audio.pause();
-      audio.src = TRACKS[idx].src;
-      audio.currentTime = 0;
+  switchTrack: (idx, autoplay = false) => {
+    const a = getAudio();
+    if (a) {
+      a.pause();
+      pendingSeek = null;
+      a.src = TRACKS[idx].src;
+      if (autoplay) a.play().catch(() => set({ playing: false }));
     }
-    set({ trackIndex: idx, progress: 0, playing: false });
+    set({ trackIndex: idx, progress: 0, playing: autoplay });
   },
 
-  next: () => {
-    const { trackIndex } = get();
-    const nextIdx = (trackIndex + 1) % TRACKS.length;
-    const audio = getAudio();
-    if (audio) {
-      audio.pause();
-      audio.src = TRACKS[nextIdx].src;
-      audio.load();
-      audio.play().catch(() => {});
-    }
-    set({ trackIndex: nextIdx, progress: 0, playing: true });
-  },
-
-  prev: () => {
-    const { trackIndex } = get();
-    const prevIdx = (trackIndex - 1 + TRACKS.length) % TRACKS.length;
-    const audio = getAudio();
-    if (audio) {
-      audio.pause();
-      audio.src = TRACKS[prevIdx].src;
-      audio.load();
-      audio.play().catch(() => {});
-    }
-    set({ trackIndex: prevIdx, progress: 0, playing: true });
-  },
+  next: () => get().switchTrack((get().trackIndex + 1) % TRACKS.length, true),
+  prev: () => get().switchTrack((get().trackIndex - 1 + TRACKS.length) % TRACKS.length, true),
 
   seek: (pct) => {
-    const audio = getAudio();
-    if (audio && audio.duration) {
-      audio.currentTime = (pct / 100) * audio.duration;
-      set({ progress: pct });
+    const a = getAudio();
+    if (!a) return;
+    if (a.duration) {
+      a.currentTime = (pct / 100) * a.duration;
+    } else {
+      // Nothing has loaded yet: remember the position and fetch just the metadata.
+      pendingSeek = pct;
+      a.preload = 'metadata';
+      a.load();
     }
+    set({ progress: pct });
   },
 }));
-
-// Wire up audio event listeners once at module load (client-side only)
-if (typeof window !== 'undefined') {
-  const audio = getAudio()!;
-  audio.addEventListener('timeupdate', () => {
-    if (audio.duration) {
-      useMusicStore.setState({ progress: (audio.currentTime / audio.duration) * 100 });
-    }
-  });
-  audio.addEventListener('ended', () => {
-    useMusicStore.setState({ playing: false });
-  });
-}

@@ -1,0 +1,33 @@
+/* Nostalgia OS 2 — canvas screensavers (src/os/screensavers.tsx).
+   Every class is prefixed saver2 so it cannot collide with the older .saver styles. */
+
+/* <Saver> (.saver2, .saver2--keycaps|starfield|pipes) fills its nearest positioned
+   ancestor. The black stays black in every theme: a screensaver is a lights-off
+   moment, not a themed surface. */
+.saver2 {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #000;
+  contain: strict;
+}
+
+/* The keycap legends read the canvas's font-family, so give it the mono face. */
+.saver2-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  font-family: var(--font-m);
+}
+
+/* <SaverThumb>: a static 96x60 picture for a picker button. */
+.saver2-thumb {
+  display: block;
+  flex: none;
+  width: 96px;
+  height: 60px;
+  overflow: hidden;
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-sm);
+  background: #000;
+}

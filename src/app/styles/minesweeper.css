@@ -1,0 +1,339 @@
+/* Minesweeper (Arcade tab). Every class starts with "mine-".
+   Win95 bevels on the board, site tokens everywhere else, so all three themes work.
+   Number colours are tuned to pass 4.5:1 on the revealed cell (var(--surface)). */
+
+.mine-app {
+  /* Horizontal room taken by panel border + padding + board frame. Keep in sync with CHROME in Minesweeper.tsx. */
+  --mine-chrome: 32px;
+  --mine-face: color-mix(in srgb, var(--text) 16%, var(--surface));
+  --mine-hi: color-mix(in srgb, #ffffff 80%, var(--surface));
+  --mine-lo: color-mix(in srgb, var(--text) 50%, var(--surface));
+  --mine-open: var(--surface);
+  --mine-grid: color-mix(in srgb, var(--text) 24%, var(--surface));
+  --mine-flag: #c8102e;
+  --mine-n1: #1f3fd1;
+  --mine-n2: #0f6b1c;
+  --mine-n3: #c8102e;
+  --mine-n4: #000080;
+  --mine-n5: #7a1020;
+  --mine-n6: #006b6b;
+  --mine-n7: #0b0b0c;
+  --mine-n8: #5e5c56;
+
+  flex: 1 1 auto;
+  display: flex;
+  height: 100%;
+  min-height: 0;
+  padding: 10px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-gutter: stable both-edges;
+  container-type: inline-size;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-ui);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+[data-theme='ink'] .mine-app {
+  --mine-hi: color-mix(in srgb, #ffffff 40%, var(--surface));
+  --mine-lo: #000000;
+  --mine-flag: #ff6a50;
+  --mine-n1: #8fa8ff;
+  --mine-n2: #9fdc6a;
+  --mine-n3: #ff8a75;
+  --mine-n4: #c9b8ff;
+  --mine-n5: #ffb36b;
+  --mine-n6: #5fdbd0;
+  --mine-n7: #f4f1ea;
+  --mine-n8: #b3b0a8;
+}
+
+/* Auto margins centre the panel but never push it out of reach when it overflows. */
+.mine-panel {
+  margin: auto;
+  width: max-content;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-md);
+  box-shadow: 4px 4px 0 var(--shadow);
+}
+
+/* ─── Toolbar: level picker + flag mode ─── */
+
+.mine-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+.mine-levels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.mine-levels button,
+.mine-flagmode {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 28px;
+  padding: 0 10px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-pill);
+  background: var(--surface);
+  color: var(--text);
+  font-family: var(--font-m);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease), background-color 0.2s, color 0.2s;
+}
+.mine-levels button:hover,
+.mine-flagmode:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 2px 2px 0 var(--shadow);
+}
+.mine-levels button:active,
+.mine-flagmode:active {
+  transform: none;
+  box-shadow: none;
+}
+.mine-levels button.is-current,
+.mine-flagmode[aria-pressed='true'] {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+.mine-flagmode .mine-glyph {
+  width: 15px;
+  height: 15px;
+}
+.mine-flagmode[aria-pressed='true'] .mine-flag-cloth {
+  fill: currentColor;
+}
+
+/* ─── LCD header: mines left, face, timer ─── */
+
+.mine-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 8px;
+  background: var(--mine-face);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-sm);
+}
+.mine-lcd {
+  display: grid;
+  padding: 4px 6px 3px;
+  border-radius: 4px;
+  background: var(--c-ink);
+  color: var(--c-tomato);
+  box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #2a2a2d;
+  font-family: var(--font-m);
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+}
+.mine-lcd > [aria-hidden='true'] {
+  grid-area: 1 / 1;
+}
+.mine-lcd-ghost {
+  opacity: 0.16;
+}
+.mine-face {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 38px;
+  height: 38px;
+  background: var(--mine-face);
+  border: 3px solid;
+  border-color: var(--mine-hi) var(--mine-lo) var(--mine-lo) var(--mine-hi);
+}
+.mine-face:active {
+  border-color: var(--mine-lo) var(--mine-hi) var(--mine-hi) var(--mine-lo);
+}
+.mine-face:active svg {
+  transform: translate(1px, 1px);
+}
+
+/* ─── Board ─── */
+
+.mine-board {
+  /* Cell size follows the container width (no horizontal scroll), capped per level. */
+  --mine-cell: min(var(--mine-max, 28px), max(16px, calc((100cqw - var(--mine-chrome)) / var(--mine-cols, 9))));
+  --mine-bevel: clamp(2px, calc(var(--mine-cell) * 0.1), 3px);
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  border: 3px solid;
+  border-color: var(--mine-lo) var(--mine-hi) var(--mine-hi) var(--mine-lo);
+  background: var(--mine-open);
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+.mine-row {
+  display: flex;
+}
+.mine-cell {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: var(--mine-cell);
+  height: var(--mine-cell);
+  padding: 0;
+  color: var(--text);
+  font-family: var(--font-m);
+  font-size: calc(var(--mine-cell) * 0.62);
+  font-weight: 800;
+  line-height: 1;
+}
+.mine-cell.is-hidden {
+  background: var(--mine-face);
+  border: var(--mine-bevel) solid;
+  border-color: var(--mine-hi) var(--mine-lo) var(--mine-lo) var(--mine-hi);
+}
+.mine-cell.is-open {
+  background: var(--mine-open);
+  box-shadow: inset 1px 1px 0 var(--mine-grid);
+}
+@media (hover: hover) {
+  .mine-board:not(.is-over) .mine-cell.is-hidden:hover {
+    background: color-mix(in srgb, var(--mine-hi) 35%, var(--mine-face));
+  }
+}
+/* Pressing a hidden cell sinks it, like the original. */
+.mine-board:not(.is-over):not(.is-flagging) .mine-cell.is-hidden:not(.is-flag):active {
+  border-width: 0;
+  background: var(--mine-open);
+  box-shadow: inset 1px 1px 0 var(--mine-grid);
+}
+.mine-board.is-over .mine-cell {
+  cursor: default;
+}
+.mine-cell.is-boom {
+  background: var(--c-tomato);
+  color: var(--c-ink);
+}
+.mine-glyph {
+  display: block;
+  width: 72%;
+  height: 72%;
+  overflow: visible;
+}
+.mine-shine {
+  fill: var(--mine-open);
+}
+.mine-cell.is-boom .mine-shine {
+  fill: var(--c-paper);
+}
+.mine-cross {
+  fill: none;
+  stroke: var(--mine-flag);
+}
+.mine-flag-cloth {
+  fill: var(--mine-flag);
+}
+.mine-n1 { color: var(--mine-n1); }
+.mine-n2 { color: var(--mine-n2); }
+.mine-n3 { color: var(--mine-n3); }
+.mine-n4 { color: var(--mine-n4); }
+.mine-n5 { color: var(--mine-n5); }
+.mine-n6 { color: var(--mine-n6); }
+.mine-n7 { color: var(--mine-n7); }
+.mine-n8 { color: var(--mine-n8); }
+
+/* ─── Footer ─── */
+
+/* width 0 + min-width 100%: the footer follows the panel width instead of setting it. */
+.mine-foot {
+  width: 0;
+  min-width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 2px 12px;
+}
+.mine-note {
+  font-size: 12px;
+  color: var(--muted);
+}
+.mine-best {
+  font-family: var(--font-m);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.mine-best-value {
+  text-transform: none;
+}
+
+/* ─── Focus: the Arcade sets a paper ring for its dark screen; the panel is light, so restore the accent. ─── */
+
+.mine-app.mine-app :focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.mine-app.mine-app .mine-cell:focus-visible {
+  position: relative;
+  z-index: 1;
+  outline-offset: 1px;
+}
+
+/* ─── Small containers (phone sheet) ─── */
+
+@container (max-width: 420px) {
+  .mine-panel {
+    gap: 6px;
+    padding: 8px;
+  }
+  .mine-lcd {
+    font-size: 19px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mine-levels button,
+  .mine-flagmode {
+    transition: none;
+  }
+  .mine-levels button:hover,
+  .mine-flagmode:hover {
+    transform: none;
+  }
+  .mine-face:active svg {
+    transform: none;
+  }
+}
+
+/* Windows High Contrast / forced colours: keep hidden and revealed cells tellable apart. */
+@media (forced-colors: active) {
+  .mine-cell.is-hidden,
+  .mine-face {
+    border-color: ButtonText;
+  }
+  .mine-cell.is-open {
+    border: 1px solid GrayText;
+  }
+  .mine-levels button.is-current,
+  .mine-flagmode[aria-pressed='true'] {
+    border-width: 3px;
+  }
+}

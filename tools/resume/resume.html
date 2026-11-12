@@ -1,0 +1,164 @@
+<!doctype html>
+<!--
+  Source for public/resume.pdf. Edit this file, then rebuild the PDF:
+
+    "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless --disable-gpu \
+      --no-pdf-header-footer --print-to-pdf=public/resume.pdf "file://$PWD/tools/resume/resume.html"
+    exiftool -all= -overwrite_original public/resume.pdf
+
+  Keep it in step with src/lib/content.ts, which the site itself reads.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Andrés T. González C. — CV</title>
+<style>
+  @page { size: Letter; margin: 0.72in 0.82in 0.7in; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Helvetica, Arial, sans-serif; font-size: 10pt; line-height: 1.22; color: #444; }
+  h1 { font-size: 30pt; line-height: 1; letter-spacing: -0.01em; color: #111; }
+  .sub { font-size: 12pt; margin-top: 3pt; color: #333; }
+  .contact { font-size: 10.5pt; color: #777; }
+  .contact a { color: #0b57d0; }
+  .contact span { margin: 0 4pt; color: #999; }
+  h2 { margin-top: 15pt; font-size: 9.5pt; letter-spacing: 0.22em; color: #111; break-after: avoid; }
+  p { margin: 0; }
+  .skills b { color: #111; }
+  .job { margin-top: 9pt; }
+  .job-head { break-after: avoid; display: flex; justify-content: space-between; align-items: baseline; gap: 12pt; font-size: 11pt; }
+  .job-head b { color: #111; }
+  .job-head .at { color: #333; }
+  .job-head .dot { color: #999; margin: 0 5pt; }
+  .job-head .when { color: #777; font-size: 10.5pt; white-space: nowrap; }
+  ul { list-style: none; margin: 4pt 0 0 11pt; }
+  li { position: relative; padding-left: 16pt; margin-top: 1.5pt; break-inside: avoid; }
+  li::before { content: '–'; position: absolute; left: 0; }
+  li b { color: #222; }
+  .lines { margin-top: 5pt; }
+  .lines p { margin-top: 2pt; break-inside: avoid; }
+  .lines b { color: #111; }
+  .lines i { font-style: normal; color: #888; }
+  .lines .dot { color: #999; margin: 0 4pt; }
+</style>
+</head>
+<body>
+  <h1>Andrés T. González C.</h1>
+  <p class="sub">Senior Product UX Designer&nbsp; ·&nbsp; Design Lead&nbsp; ·&nbsp; UX Consultant</p>
+  <p class="contact"><a href="https://www.linkedin.com/in/andres-gonzalez-ux/">linkedin.com/in/andres-gonzalez-ux</a><span>·</span>andres.t.glez.c@gmail.com<span>·</span>Santiago, Chile&nbsp; open to remote</p>
+
+  <h2>PROFILE</h2>
+  <p>Senior Product UX Designer and consultant with 10+ years designing enterprise-grade digital products across healthcare, automotive, logistics, telecom, aviation and energy. Specializes in turning complex internal systems and legacy tools into intuitive, high-performance experiences, with a strong command of design systems, real-time data visualization and AI-powered UX workflows. Currently a Senior UX Technical Consultant at Perficient, embedded with Fortune 500 and healthcare clients across the US, and founder of TheMiraiLab. Open to senior IC or design lead roles in product-first teams.</p>
+
+  <h2>SKILLS</h2>
+  <div class="skills">
+    <p><b>AI &amp; Design Tools:</b>&nbsp; Claude (Anthropic), Claude Code, Claude Cowork, Claude Design, ChatGPT, Google Gemini, Figma AI / Figma Make, Prompt Engineering for UX, Gen AI for UX, AI-Driven Prototyping, AI-Assisted User Research, Conversational UX</p>
+    <p><b>Design:</b>&nbsp; Figma, FigJam, Framer, Sketch, Prototyping, Wireframing, Interaction Design, Visual Design, Data Visualization</p>
+    <p><b>Systems:</b>&nbsp; Design Systems, Component Libraries, Tokens, Accessibility (WCAG AA), Responsive and Mobile-First Design, Information Architecture</p>
+    <p><b>Research:</b>&nbsp; User Interviews, Usability Testing, Journey Mapping, Heuristic Evaluation, Design Thinking, UserTesting, Optimal Workshop, Hotjar</p>
+    <p><b>Productivity:</b>&nbsp; Jira, Confluence, Miro, Mural, Zeplin, Marvel, HTML/CSS basics</p>
+    <p><b>Languages:</b>&nbsp; Spanish (native), English (native)</p>
+  </div>
+
+  <h2>EXPERIENCE</h2>
+
+  <div class="job">
+    <div class="job-head"><span><b>Senior UX Technical Consultant</b><span class="dot">·</span><span class="at">Perficient</span></span><span class="when">May 2025 – Present</span></div>
+    <ul>
+      <li>Promoted to Senior Consultant, leading design on US enterprise and healthcare engagements, working directly with client stakeholders and using AI across research, prototyping and documentation. Clients at Perficient include XPO Logistics, 3M, Mohawk Flooring, Toyota, and HAP Henry Ford.</li>
+      <li><b>Fortune 500 healthcare company</b> (2026 – Present): design and author the role-based user documentation for a new internal platform. Own the information architecture and content model for a multi-guide suite, the weekly expert review cycle, and an AI-assisted workflow that turns technical demos into reviewed drafts, giving the client a day-one enablement package.</li>
+      <li><b>Health insurance plan</b> (2026): dedicated design system specialist inside the client’s design team. Audited design tokens across web and mobile, governed component changes and acted as the quality checkpoint before handoff, reducing design debt across member-facing products.</li>
+      <li><b>Global automaker</b> (2025): Senior Product Designer. Led end-to-end design of new real-time dashboards and reporting tools that replaced legacy internal tools, improving operational visibility and cutting manual data lookup.</li>
+      <li><b>US health system</b> (2025): led scalable, reusable UI components in the enterprise design system for new web and iOS experiences, and improved search for physicians, locations and clinical services.</li>
+    </ul>
+  </div>
+
+  <div class="job">
+    <div class="job-head"><span><b>UX Technical Consultant</b><span class="dot">·</span><span class="at">Perficient</span></span><span class="when">Sep 2022 – May 2025</span></div>
+    <ul>
+      <li>Embedded UX product designer on enterprise client engagements, bridging design and development and owning research, interaction design and design system contributions across parallel projects.</li>
+      <li><b>Academic health system</b> (2024 – 2025): evolved the design system and reusable components behind the search experience for physicians, locations and diagnoses.</li>
+      <li><b>Fortune 500 manufacturer</b> (2023 – 2024): maintained and evolved the enterprise design system, building reusable UI components, patterns and style guides for consistency across products.</li>
+      <li><b>Flooring and surfaces manufacturer</b> (2023 – 2024): designed the full experience of an iPad app for previewing high-resolution quartz slabs, from research and personas to prototypes and usability testing.</li>
+      <li><b>Freight and logistics company</b> (2022 – 2023): designed web and app workflows for freight and supply chain systems, including dashboards for real-time shipment visibility.</li>
+    </ul>
+  </div>
+
+  <div class="job">
+    <div class="job-head"><span><b>Founder</b><span class="dot">·</span><span class="at">TheMiraiLab</span></span><span class="when">Jan 2025 – Present</span></div>
+    <ul>
+      <li>Founded an independent UX product design studio specializing in intuitive, user-centered digital solutions bridging human interaction and technology.</li>
+      <li>Leads discovery, strategy, and design delivery for clients across product design and digital experience consulting.</li>
+    </ul>
+  </div>
+
+  <div class="job">
+    <div class="job-head"><span><b>User Experience Design Lead</b><span class="dot">·</span><span class="at">GASCO</span></span><span class="when">Oct 2021 – Sep 2022</span></div>
+    <ul>
+      <li>Led the newly formed UX product design team at Chile’s national gas utility, managing and planning new digital products across UX, UI, UXR, CX, and marketing verticals, for web and app platforms.</li>
+      <li>Defined team priorities, onboarded and mentored designers, managed design budget, and championed design thinking and user-centered practices company-wide.</li>
+      <li>Oversaw projects from intake through delivery, coordinating cross-functional stakeholders across multiple business units, and established a design system for consistency across applications.</li>
+    </ul>
+  </div>
+
+  <div class="job">
+    <div class="job-head"><span><b>UX Product Designer</b><span class="dot">·</span><span class="at">SKY Airline</span></span><span class="when">May 2019 – Oct 2021</span></div>
+    <ul>
+      <li>Owned product design for the web team and booking app, serving as primary UX lead for all customer-facing digital experiences.</li>
+      <li>Redesigned the end-to-end boarding pass experience, replacing a third-party solution with an in-house design that improved brand consistency across all passenger touch-points.</li>
+      <li>Established a unified design system (Storybook) across web and iOS, and guided the migration from legacy booking platforms to modern, user-friendly systems.</li>
+    </ul>
+  </div>
+
+  <div class="job">
+    <div class="job-head"><span><b>UX/UI Designer</b><span class="dot">·</span><span class="at">Entel</span></span><span class="when">Nov 2017 – May 2019</span></div>
+    <ul>
+      <li>UX product designer within the Center of Excellence team at Chile’s largest telecommunications company, working across product and customer experience for web and app.</li>
+      <li>Co-led the launch of Entel’s first unified design system, establishing component standards, documentation, and adoption workflows across product, CX, and brand teams.</li>
+      <li>Designed user journeys connecting the in-store experience with Entel’s digital platforms, and interfaces for customer support, including AI-powered chatbots.</li>
+    </ul>
+  </div>
+
+  <div class="job">
+    <div class="job-head"><span><b>UX Product Designer</b><span class="dot">·</span><span class="at">Nsity App</span></span><span class="when">Jun 2019 – Jan 2020</span></div>
+    <ul>
+      <li>UX design lead for a London-based civic tech startup enabling users to plant native forests and support nonprofits through in-app polls.</li>
+      <li>Designed the core polling and impact-tracking experience end-to-end, from research through high-fidelity prototype and handoff.</li>
+    </ul>
+  </div>
+
+  <div class="job">
+    <div class="job-head"><span><b>UI Designer</b><span class="dot">·</span><span class="at">Wavetec</span></span><span class="when">Jun 2017 – Nov 2017</span></div>
+    <ul>
+      <li>Optimized user flows and interface design for enterprise queue management systems deployed in high-traffic environments. Based in Dubai.</li>
+    </ul>
+  </div>
+
+  <div class="job">
+    <div class="job-head"><span><b>Senior UX/UI Designer</b><span class="dot">·</span><span class="at">10Ben</span></span><span class="when">2015 – Nov 2017</span></div>
+    <ul>
+      <li>Design lead for Houston-based clients including Microsoft, FSP Performance, K9s4Cops, and Houston Clinics, covering full UX lifecycle from discovery to developer handoff.</li>
+      <li>Delivered digital products across web and mobile platforms, leading wireframing, visual design, prototyping, on-site user testing and stakeholder presentations.</li>
+    </ul>
+  </div>
+
+  <h2>EDUCATION</h2>
+  <div class="lines">
+    <p><b>Diploma in Information Architecture and User Experience</b><span class="dot">·</span>Pontificia Universidad Católica de Valparaíso<span class="dot">·</span><i>2019–2020</i></p>
+    <p><b>Diploma in Architecture, Testing and Experience Design (UX/UI)</b><span class="dot">·</span>Universidad de Chile<span class="dot">·</span><i>2018–2019</i></p>
+    <p><b>Degree in Design and Visual Communications</b><span class="dot">·</span>Universidad del Zulia, Venezuela<span class="dot">·</span><i>2010–2015</i></p>
+  </div>
+
+  <h2>CERTIFICATIONS</h2>
+  <div class="lines">
+    <p><b>Google Certified Generative AI Leader</b><span class="dot">·</span>Google<span class="dot">·</span><i>Dec 2025</i></p>
+    <p><b>Prompt Engineering for UX Design</b><span class="dot">·</span>Udemy<span class="dot">·</span><i>May 2025</i></p>
+    <p><b>Gen AI for UX</b><span class="dot">·</span>Udemy<span class="dot">·</span><i>Feb 2025</i></p>
+    <p><b>Figma 2025 – User Interface Design</b><span class="dot">·</span>Udemy<span class="dot">·</span><i>Jan 2025</i></p>
+    <p><b>Figma 2024 + Responsive Design</b><span class="dot">·</span>Udemy<span class="dot">·</span><i>Dec 2024</i></p>
+    <p><b>Gamification – How to Create Engaging User Experiences</b><span class="dot">·</span>IxDF – Interaction Design Foundation<span class="dot">·</span><i>Aug 2021</i></p>
+    <p><b>Human-Computer Interaction – HCI</b><span class="dot">·</span>IxDF – Interaction Design Foundation<span class="dot">·</span><i>Oct 2020</i></p>
+    <p><b>Emotional Product Design</b><span class="dot">·</span>IxDF – Interaction Design Foundation<span class="dot">·</span><i>Oct 2020</i></p>
+    <p><b>Member</b><span class="dot">·</span>The Interaction Design Foundation (IxDF)<span class="dot">·</span><i>since 2020</i></p>
+  </div>
+</body>
+</html>

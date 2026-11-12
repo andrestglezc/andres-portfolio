@@ -1,13 +1,28 @@
 import type { NextConfig } from "next";
+import { execSync } from "node:child_process";
 
 // CSP allows same-origin resources only.
 // 'unsafe-inline' for style-src is required because React uses inline styles throughout.
-// blob: in connect-src covers audio/Blob URLs used by the music player.
+// blob: in connect-src covers the pdf.js worker used by the resume viewer.
 // frame-src 'none': nothing on the site embeds an iframe (the resume renders via react-pdf canvas).
+// React's dev build needs eval() for debugging features; production never does.
+const isDev = process.env.NODE_ENV === 'development';
+
+// "Last updated" badge: the date of the latest commit, or of this build when git is not available.
+function lastUpdated() {
+  try {
+    const out = execSync('git log -1 --format=%cI', { stdio: ['ignore', 'pipe', 'ignore'] }).toString().trim();
+    if (out) return out;
+  } catch {
+    /* no git in this environment */
+  }
+  return new Date().toISOString();
+}
+
 const CSP = [
   "default-src 'self'",
   // 'unsafe-inline' is required: Next.js injects inline bootstrap scripts for hydration
-  "script-src 'self' 'unsafe-inline'",
+  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''}`,
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob:",
   "media-src 'self' blob:",
@@ -23,6 +38,9 @@ const CSP = [
 
 const nextConfig: NextConfig = {
   devIndicators: false,
+  env: {
+    NEXT_PUBLIC_LAST_UPDATED: lastUpdated(),
+  },
   images: {
     unoptimized: true,
   },

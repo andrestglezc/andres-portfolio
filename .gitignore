@@ -43,7 +43,11 @@ next-env.d.ts
 # local-only working files (untracked on purpose — see commit 766a9a7)
 CLAUDE.md
 DAILY_LOG.md
+REVIEW.md
 
 # claude code local config
-.claude/settings.local.json
+**/.claude/settings.local.json
 .claude/worktrees/
+
+# source documents dropped in the project root (CVs and the like) never ship
+/*.pdf

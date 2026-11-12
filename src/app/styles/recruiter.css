@@ -1,0 +1,488 @@
+/* Recruiter mode — the whole portfolio as one plain, printable page (src/os/RecruiterView.tsx).
+   Every class here starts with rec-. It reads as ink on paper in every theme, on screen and in print. */
+
+.rec {
+  /* Pin the theme tokens to Paper inside this view, so Teal '98 and Ink look the same and the
+     global focus ring, text selection and <kbd> styles stay legible on the light page. */
+  --bg: var(--c-paper);
+  --surface: var(--c-paper);
+  --surface-2: #f1efe9;
+  --text: var(--c-ink);
+  --muted: #5e5c56; /* 6.4:1 on paper */
+  --line: rgba(11, 11, 12, 0.16);
+  --border: var(--c-ink);
+  --shadow: var(--c-ink);
+  --accent: var(--c-ink);
+  --on-accent: var(--c-paper);
+  --bar: var(--c-ink);
+  --on-bar: var(--c-paper);
+  --rec-gutter: 24px;
+  --rec-width: 860px;
+
+  position: fixed;
+  inset: 0;
+  z-index: 12000;
+  overflow: auto;
+  overscroll-behavior: contain;
+  background: var(--c-paper);
+  color: var(--c-ink);
+  color-scheme: light;
+  font-family: var(--font-ui);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+/* ─── Toolbar (screen only) ─────────────────────────────────────────────── */
+
+.rec-bar {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  padding: 10px max(var(--rec-gutter), calc((100% - var(--rec-width)) / 2 + var(--rec-gutter)));
+  background: var(--c-paper);
+  border-bottom: 1.5px solid var(--c-ink);
+}
+.rec-bar-label {
+  font-family: var(--font-m);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.rec-bar-label kbd {
+  color: var(--c-ink);
+  text-transform: none;
+  letter-spacing: 0;
+}
+.rec-bar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.rec-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 16px;
+  border: 1.5px solid var(--c-ink);
+  border-radius: var(--r-pill);
+  background: var(--c-paper);
+  color: var(--c-ink);
+  font-family: var(--font-m);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.rec-btn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 3px 3px 0 var(--c-ink);
+}
+.rec-btn:active {
+  transform: none;
+  box-shadow: none;
+}
+.rec-btn--primary {
+  background: var(--c-ink);
+  color: var(--c-paper);
+}
+
+/* ─── Document ──────────────────────────────────────────────────────────── */
+
+.rec-doc {
+  max-width: var(--rec-width);
+  margin: 0 auto;
+  padding: 40px var(--rec-gutter) 72px;
+}
+.rec-name {
+  font-family: var(--font-d);
+  text-wrap: balance;
+  font-size: clamp(30px, 7vw, 46px);
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+}
+/* It only takes focus so screen readers start here; it is not a control. */
+.rec-name:focus {
+  outline: none;
+}
+.rec-title {
+  margin-top: 6px;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+.rec-summary {
+  max-width: 66ch;
+  margin-top: 10px;
+  font-size: 16px;
+}
+.rec-contact {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 22px;
+  margin-top: 16px;
+  font-size: 14px;
+}
+.rec-contact li {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+}
+.rec-contact a {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 24px;
+  overflow-wrap: anywhere;
+}
+
+.rec a {
+  color: var(--c-ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+.rec a:hover {
+  text-decoration-thickness: 2px;
+}
+.rec-ext {
+  display: inline-flex;
+  vertical-align: -1px;
+  margin-left: 2px;
+}
+.rec-contact a.rec-cv {
+  gap: 6px;
+  min-height: 32px;
+  padding: 0 12px;
+  border: 1.5px solid var(--c-ink);
+  border-radius: var(--r-pill);
+  font-family: var(--font-m);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.rec-contact a.rec-cv:hover {
+  box-shadow: 3px 3px 0 var(--c-ink);
+}
+.rec-cv .rec-ext {
+  margin-left: 0;
+}
+
+.rec-section {
+  margin-top: 36px;
+}
+.rec-h2 {
+  margin-bottom: 14px;
+  padding-bottom: 6px;
+  border-bottom: 1.5px solid var(--c-ink);
+  font-family: var(--font-m);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.rec-list {
+  display: grid;
+  gap: 18px;
+}
+.rec-item-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0 12px;
+}
+.rec-h3 {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+.rec-meta {
+  font-family: var(--font-m);
+  font-size: 12px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.rec-roles {
+  margin-top: 2px;
+  font-size: 14.5px;
+}
+.rec-note,
+.rec-role {
+  font-size: 14px;
+  color: var(--muted);
+}
+.rec-body {
+  margin-top: 4px;
+  font-size: 14.5px;
+}
+.rec-body a {
+  white-space: nowrap;
+}
+
+.rec-skills {
+  display: grid;
+  gap: 10px;
+}
+.rec-skills dt {
+  font-family: var(--font-m);
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.rec-skills dd {
+  font-size: 14.5px;
+}
+.rec-bullets {
+  display: grid;
+  gap: 4px;
+  font-size: 14.5px;
+}
+.rec-bullets li {
+  position: relative;
+  padding-left: 16px;
+}
+.rec-bullets li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 6px;
+  height: 6px;
+  background: var(--c-ink);
+}
+.rec-plain {
+  font-size: 14.5px;
+}
+
+@media (min-width: 560px) {
+  .rec-skills > div {
+    display: grid;
+    grid-template-columns: 8.5rem minmax(0, 1fr);
+    gap: 12px;
+    align-items: baseline;
+  }
+}
+@media (min-width: 720px) {
+  .rec-list--work {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px 36px;
+  }
+  .rec-cols {
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    gap: 0 40px;
+  }
+}
+@media (max-width: 600px) {
+  .rec {
+    --rec-gutter: 16px;
+  }
+  .rec-doc {
+    padding-top: 28px;
+  }
+  .rec-bar-label {
+    display: none;
+  }
+  .rec-bar-actions,
+  .rec-btn {
+    flex: 1 1 auto;
+  }
+}
+/* Short windows and heavy zoom: the toolbar scrolls away instead of covering the page. */
+@media (max-height: 500px) {
+  .rec-bar {
+    position: static;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rec-btn:hover,
+  .rec-btn:active {
+    transform: none;
+  }
+}
+
+/* ─── Print: one page, black on white, A4 or US Letter ──────────────────── */
+
+@page {
+  margin: 10mm 12mm;
+}
+
+@media print {
+  /* While this view is mounted, print it alone: the OS, the phone site and anything else beside it go. */
+  body:has(.rec) .os,
+  body:has(.rec) .m,
+  body:has(.rec) .preboot,
+  body:has(> .rec) > :not(.rec) {
+    display: none !important;
+  }
+  /* globals.css gives html a fixed height and body a themed background. */
+  html:has(.rec),
+  html:has(.rec) body {
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  .rec {
+    --muted: #333;
+    position: static !important;
+    inset: auto;
+    z-index: auto;
+    overflow: visible;
+    height: auto;
+    background: #fff;
+    color: #000;
+    font-size: 9.5pt;
+    line-height: 1.28;
+  }
+  .rec-bar,
+  .rec-ext {
+    display: none !important;
+  }
+  .rec-doc {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
+  .rec a {
+    color: #000;
+    text-decoration-thickness: 0.5pt;
+    text-underline-offset: 1.5pt;
+  }
+  .rec a[data-print-url]::after {
+    content: ' (' attr(data-print-url) ')';
+  }
+
+  .rec-name {
+    font-size: 20pt;
+  }
+  .rec-title {
+    margin-top: 1pt;
+    font-size: 11pt;
+  }
+  .rec-summary {
+    max-width: none;
+    margin-top: 3pt;
+    font-size: 9.5pt;
+  }
+  .rec-contact {
+    gap: 0 14pt;
+    margin-top: 4pt;
+    font-size: 9pt;
+  }
+  .rec-contact li,
+  .rec-contact a {
+    min-height: 0;
+  }
+  .rec-contact a.rec-cv {
+    min-height: 0;
+    padding: 0;
+    border: 0;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    letter-spacing: normal;
+    text-transform: none;
+    text-decoration: underline;
+    white-space: normal;
+  }
+
+  .rec-section {
+    margin-top: 8pt;
+  }
+  .rec-h2 {
+    margin-bottom: 5pt;
+    padding-bottom: 2pt;
+    border-bottom-width: 1pt;
+    font-size: 8pt;
+    break-after: avoid;
+  }
+  /* Two columns for the long lists; no item ever splits across a column or a page. */
+  .rec-list,
+  .rec-list--work {
+    display: block;
+    columns: 2;
+    column-gap: 8mm;
+  }
+  .rec-item {
+    break-inside: avoid;
+    padding-bottom: 4pt;
+  }
+  .rec-h3 {
+    font-size: 9.5pt;
+    line-height: 1.25;
+  }
+  .rec-meta {
+    font-size: 8pt;
+  }
+  .rec-roles,
+  .rec-note,
+  .rec-role,
+  .rec-body,
+  .rec-skills dd,
+  .rec-bullets,
+  .rec-plain {
+    font-size: 9pt;
+  }
+  .rec-roles {
+    margin-top: 0;
+  }
+  .rec-body {
+    margin-top: 1pt;
+  }
+
+  .rec-cols {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    gap: 0 8mm;
+  }
+  .rec-skills {
+    gap: 2pt;
+  }
+  .rec-skills > div {
+    display: grid;
+    grid-template-columns: 6.5em minmax(0, 1fr);
+    gap: 6pt;
+    align-items: baseline;
+    break-inside: avoid;
+  }
+  .rec-skills dt {
+    font-size: 7.5pt;
+  }
+  .rec-bullets {
+    gap: 1pt;
+  }
+  .rec-bullets li {
+    padding-left: 9pt;
+  }
+  .rec-bullets li::before {
+    top: 0.55em;
+    width: 3.5pt;
+    height: 3.5pt;
+    background: #000;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+}

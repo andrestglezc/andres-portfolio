@@ -1,76 +1,57 @@
-# NostalgiaOS 🖥️
+# Nostalgia OS 2 🖥️
 
-> A Windows 98-inspired interactive portfolio — because flat design had its moment, but we miss the clouds.
+> A custom desktop OS in the browser, used as a portfolio. The wallpaper is the landing page and every case study is a window.
 
-**Live:** [atgc.design](https://atgc.design)
-
----
-
-![NostalgiaOS Desktop](public/preview.png)
+**Live:** [atgc.design](https://www.atgc.design)
 
 ---
 
 ## What is this?
 
-Instead of a traditional portfolio, I built a fully interactive desktop OS experience in the browser. You land on a Windows 98-style desktop, navigate folders, open windows, read files, and explore case studies — exactly like using a computer in 1998.
-
-It's a portfolio that makes you feel something before you've read a single line of copy.
-
----
+Version 1 was a faithful Windows 98 clone. Version 2 keeps the idea (a computer you explore) and gives it its own identity: bold editorial type, a fanned hand of case-study cards, hard-shadow windows, a dock, and a command palette.
 
 ## Features
 
-- 🖥️ **Full desktop OS** — draggable, resizable windows with Win98 chrome
-- ⚡ **Boot sequence** — BIOS screen, progress bar, welcome screen on every load
-- 📁 **Finder navigation** — open folders, browse case studies like files
-- 🎵 **Music player** — real MP3 playback with rotating vinyl covers (Sinatra + Hendrix)
-- 🎮 **DOOM.exe, Age of Empires, The Sims** — because every 90s desktop had games
-- 🕯️ **O'Malley shrine** — a tribute to my 16-year-old cat
-- 📄 **Resume.pdf** — viewable and downloadable directly from the desktop
-- 🚀 **Start menu** — Programs, Run, Help, Settings, Shut Down, Sleep screensaver
-- 💬 **README.txt** — opens automatically on load with a typewriter animation
-- 📱 **Mobile version** — clean single-page fallback for phones and tablets
-- 🎨 **Win98 aesthetic** — clouds wallpaper, pixel icons, beveled buttons, MS Sans Serif
+- **Desktop as landing page**: headline, live Santiago clock and all 8 case studies visible before any click
+- **Window manager**: drag, resize from edges, maximize, minimize to the dock, mouse and touch
+- **Dock** with running indicators, plus tiles for open case studies
+- **Command palette** (`⌘K` / `Ctrl K`) to search apps, case studies and actions
+- **Apps**: About, Work, case-study reader, Resume (PDF), Contact, Music, Arcade, O'Malley, README, System
+- **Three themes**: Teal '98 (default), Paper, and Ink (saved per visitor)
+- **Boot, sleep, restart, shut down**: the boot plays once per session and is skippable
+- **Phones** get the same content and look as one scrolling page
+- Respects `prefers-reduced-motion`; everything is keyboard reachable
 
----
+## Tech stack
 
-## Tech Stack
+| Layer      | Technology                                   |
+| ---------- | -------------------------------------------- |
+| Framework  | Next.js 16 (App Router)                      |
+| Language   | TypeScript                                   |
+| Styling    | One CSS file of design tokens (`globals.css`) |
+| Animation  | Framer Motion                                |
+| State      | Zustand                                      |
+| Fonts      | Bricolage Grotesque, EB Garamond, Geist, Geist Mono (self-hosted by `next/font`) |
+| Hosting    | Vercel                                       |
 
-| Layer      | Technology                   |
-| ---------- | ---------------------------- |
-| Framework  | Next.js 14 (App Router)      |
-| Language   | TypeScript                   |
-| Styling    | Tailwind CSS + inline styles |
-| Animations | Framer Motion                |
-| State      | Zustand                      |
-| Fonts      | MS Sans Serif / Inter        |
-| Hosting    | Vercel                       |
-| Domain     | Namecheap                    |
+## Where things live
 
----
+```
+src/lib/content.ts   every word on the site (profile, case studies, skills, experience)
+src/os/              the OS: store, app registry, windows, dock, top bar, boot, palette
+src/apps/            one file per app
+src/mobile/          the phone layout
+src/app/globals.css  tokens, themes and all component styles
+```
 
-## Case Studies
+To add a case study: add an entry to `caseStudies` and its key to `caseStudyOrder` in `content.ts`. The desktop fan, Work app, palette and phone layout pick it up.
 
-| Project             | Role                                        | Industry             |
-| ------------------- | ------------------------------------------- | -------------------- |
-| XPO Design System   | Senior UX Technical Consultant · Perficient | Enterprise Logistics |
-| Entel Design System | UX/UI Designer                              | Telecommunications   |
-| SKY Airline         | UX Product Designer                         | Aviation             |
-| GASCO               | User Experience Design Lead                 | Energy               |
-| Nsity App           | UX Product Designer                         | Civic Tech           |
-
----
-
-## Run Locally
+## Run locally
 
 ```bash
-git clone https://github.com/andrestglezc/andres-portfolio.git
-cd andres-portfolio
 npm install
 npm run dev
 ```
-
-Open [http://localhost:3000](http://localhost:3000) and enjoy the boot sequence.
 
 ---
 
@@ -88,8 +69,8 @@ The entire portfolio — from concept to deployed site — was completed in a si
 
 ## About
 
-**Andres T. Gonzalez C.**  
-Senior UX Product Designer · AI × UX  
+**Andrés T. González C.**  
+Product UX/AI Designer  
 Senior UX Technical Consultant @ Perficient · Founder @ TheMiraiLab
 
 - 🌐 [atgc.design](https://atgc.design)
